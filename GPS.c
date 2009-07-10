@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.3 2009/07/10 20:30:46 avr Exp $
+ * $Id: GPS.c,v 1.4 2009/07/10 20:46:52 avr Exp $
  *
  */
 
@@ -354,7 +354,7 @@ void GpsCalculateLocator(void)
   char temp[5];
   int degrees;
 
-  for (unsigned int i=0; i<sizeof(gLocator); i++ ) gLocator[i] = ' ';
+  memset( gLocator, ' ', sizeof(gLocator));
   
   // --- 1st character
   

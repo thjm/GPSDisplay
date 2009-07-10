@@ -4,7 +4,7 @@
 //
 // Purpose: Test program for GPS receiver string evaluation
 //
-// $Id: gpstest.cc,v 1.1 2009/07/10 10:59:00 avr Exp $
+// $Id: gpstest.cc,v 1.2 2009/07/10 20:46:52 avr Exp $
 //
 
 
@@ -138,6 +138,10 @@ int main(int argc,char** argv)
 	  default: LcdDisplaySetMode( kDateTime );
 	}
       }
+      
+    } // if ( serial_port.IsDataAvailable() )
+    else {
+      usleep( 10 * 1000 ); // 10 msec, chars every 2 msec @ 4800 Bd
     }
     
     if ( kbhit() ) {
