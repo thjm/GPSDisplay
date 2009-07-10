@@ -2,5 +2,9 @@
 *.i
 .sconsign.dblite
 options.cache
+.deps
 .build
 gpstest
+*.elf
+*.hex
+*.eep

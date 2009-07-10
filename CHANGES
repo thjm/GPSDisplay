@@ -1,7 +1,24 @@
-$Id: CHANGES,v 1.1 2009/07/10 10:59:00 avr Exp $
+$Id: CHANGES,v 1.2 2009/07/10 14:21:20 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
+
+ToDo:
+-----
+- fix pin assignments for the LCD display
+- add button
+- place text strings in Flash (ProgMem)
+
+
+2009/07/10 (thjm) - SConstruct splitted into SConscript
+                    + extra build directory
+		  - AVR implementation added:
+		    - Makefile is for AVR (similar to WhereAVR)
+		    - GPSDisplay.c contains the main() for the AVR
+		    - using LCD code of P.Fleury
+		    - using UART code of P.Fleury for GPS comms
+		      -> tbd: replace by code of N4TXI
+		  - more text into file README
 
 2009/07/08 (thjm) - current functionality:
                     - reading and parsing NMEA strings

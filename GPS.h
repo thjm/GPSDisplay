@@ -3,7 +3,7 @@
  *
  * Purpose: GPS messaging definitions/declarations for the atmega8.
  *
- * $Id: GPS.h,v 1.1 2009/07/10 10:59:00 avr Exp $
+ * $Id: GPS.h,v 1.2 2009/07/10 14:21:20 avr Exp $
  */
 
 #ifndef _GPS_h_
@@ -104,7 +104,9 @@ extern void GpsCalculateLocator(void);
 #endif /* APRS */
 
 #ifndef APRS
+#if !(defined __AVR__)
 extern void GpsMsgShow(void);
+#endif /* __AVR__ */
 #endif /* APRS */
 
 #ifdef __cplusplus

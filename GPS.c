@@ -4,11 +4,13 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.1 2009/07/10 10:59:00 avr Exp $
+ * $Id: GPS.c,v 1.2 2009/07/10 14:21:20 avr Exp $
  *
  */
 
-#include <stdio.h>
+#if !(defined __AVR__)
+# include <stdio.h>
+#endif /* __AVR__ */
 #include <stdlib.h>  // atoi()
 #include <string.h>
 
@@ -70,7 +72,9 @@ void GpsMsgPrepare(void)
   GpsDataClear( &gGpsData );
   
   strcpy( gGpsData.fTime, gTempGpsData.fTime ); 	    // latest Time
+#ifndef APRS
   strcpy( gGpsData.fDate, gTempGpsData.fDate ); 	    // latest Date
+#endif /* APRS */
   strcpy( gGpsData.fLatitude, gTempGpsData.fLatitude );     // latest Latitude
   gGpsData.fNorthSouth[0] = gTempGpsData.fNorthSouth[0];
   strcpy( gGpsData.fLongitude, gTempGpsData.fLongitude );   // latest Longitude
@@ -304,8 +308,8 @@ void GpsCalculateFeet(void)
   }
   // The lAltitude variable now contains the altitude in meters.
 
-  printf("lAltitude= %ld m\n",lAltitude);
-  
+  // printf("lAltitude= %ld m\n",lAltitude);
+
   // The following is an approximation of 3.28 to convert Meters to Feet
   lAltitude *= 3;					// Start by multiplying by 3
   lAltitude += lAltitude>>4;		  		// add to self/16  (3.1875)
@@ -337,7 +341,7 @@ void GpsCalculateFeet(void)
   gAltitudeFeet[index++] = lAltitude + 48;  	// Last digit resides in LongAlt...
   gAltitudeFeet[index] = 0;  			// Terminate string
 
-  printf("gAltitudeFeet= %s ft\n", gAltitudeFeet);
+  // printf("gAltitudeFeet= %s ft\n", gAltitudeFeet);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -347,7 +351,7 @@ void GpsCalculateFeet(void)
 // results in 6 char locator string in variable gLocator
 void GpsCalculateLocator(void)
  {
-  for (int i=0; i<sizeof(gLocator); i++ ) gLocator[i] = ' ';
+  for (unsigned int i=0; i<sizeof(gLocator); i++ ) gLocator[i] = ' ';
   char temp[5];
   int degrees;
   
@@ -403,7 +407,7 @@ void GpsCalculateLocator(void)
 /* ------------------------------------------------------------------------- */
 
 #ifndef APRS
-
+#if !(defined __AVR__)
 void GpsMsgShow(void)
  {
   printf( "---------------------------------\n" );
@@ -419,7 +423,7 @@ void GpsMsgShow(void)
   printf( "sats:  %s\n", gGpsData.fSatellites );
   printf( "---------------------------------\n" );
 }
-
+#endif /* __AVR__ */
 #endif /* APRS */
 
 /* ------------------------------------------------------------------------- */

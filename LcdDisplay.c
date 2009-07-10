@@ -4,13 +4,21 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LcdDisplay.c,v 1.1 2009/07/10 10:59:00 avr Exp $
+ * $Id: LcdDisplay.c,v 1.2 2009/07/10 14:21:20 avr Exp $
  *
  */
 
-#include <stdio.h>
+
+//#if !(defined __AVR__)
+# include <stdio.h>
+//#endif /* __AVR__ */
 #include <stdlib.h>
 #include <string.h>
+
+#if (defined __AVR__)
+# include <avr/pgmspace.h>
+# include "lcd.h"
+#endif /* __AVR__ */
 
 #include "GPS.h"
 #include "LcdDisplay.h"
@@ -33,7 +41,22 @@ void LcdDisplayShow(void)
   LcdDisplayUpdate();
   
   // clear display
+
+#if (defined __AVR__)
+  lcd_clrscr();        // clear display and home cursor
+#endif /* __AVR */
+
+  // and output the data
+    
+#if (defined __AVR__)
+  lcd_gotoxy( 0, 0 );
+  for (unsigned int i=0; i<sizeof(gLCDLine1); i++ )
+    lcd_putc( gLCDLine1[i] );
   
+  lcd_gotoxy( 0, 1 );
+  for (unsigned int i=0; i<sizeof(gLCDLine2); i++ )
+    lcd_putc( gLCDLine2[i] );
+#else
   printf("LCD0: '");
   for (unsigned int i=0; i<sizeof(gLCDLine1); i++ )
     printf("%c", gLCDLine1[i] );
@@ -43,6 +66,7 @@ void LcdDisplayShow(void)
   for (unsigned int i=0; i<sizeof(gLCDLine2); i++ )
     printf("%c", gLCDLine2[i] );
   printf("'\n");
+#endif /* __AVR__ */
 }
 
 /* ------------------------------------------------------------------------- */
@@ -54,7 +78,15 @@ void LcdDisplaySetMode(EDisplayMode mode)
 
 /* ------------------------------------------------------------------------- */
 
-const char *gLCDText[][2] = {
+/** predefined text strings for the 2*16 char LCD display.
+  *
+  * Note: On the AVR it should be inside the program memory (flash)!
+  */
+#if (defined __AVR__)
+static const char *gLCDText[][2] /* PROGMEM */ = {
+#else
+static const char *gLCDText[][2] = {
+#endif /* __AVR__ */
 //  0123456789012345    0123456789012345
  { "   xx:xx:xxUT   ", "     JN49FD     " }, // kTimeLocator
  { "DATE:   .  .    ", "TIME:   :  :  UT" }, // kDateTime
