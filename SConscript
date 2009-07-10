@@ -1,7 +1,7 @@
 #
 # SConscript for GPSDisplay base directory
 #
-# $Id: SConscript,v 1.1 2009/07/10 14:21:20 avr Exp $
+# $Id: SConscript,v 1.2 2009/07/10 20:30:46 avr Exp $
 #
 
 Import('env')
@@ -16,8 +16,8 @@ env.Append(LIBSERIALLIB = 'serial')
 # some more build options
 #
 #env.AppendUnique(CPPDEFINES = ['APRS'])
+env.AppendUnique(CCFLAGS= ['-std=c99'])
 env.AppendUnique(CPPPATH = [ env['LIBSERIALINCDIR'] ])
-env.AppendUnique(CFLAGS= ['-std=c99'])
 env.AppendUnique(LIBPATH = [ env['LIBSERIALLIBDIR'] ])
 
 # program gpstest

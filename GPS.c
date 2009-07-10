@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.2 2009/07/10 14:21:20 avr Exp $
+ * $Id: GPS.c,v 1.3 2009/07/10 20:30:46 avr Exp $
  *
  */
 
@@ -351,9 +351,10 @@ void GpsCalculateFeet(void)
 // results in 6 char locator string in variable gLocator
 void GpsCalculateLocator(void)
  {
-  for (unsigned int i=0; i<sizeof(gLocator); i++ ) gLocator[i] = ' ';
   char temp[5];
   int degrees;
+
+  for (unsigned int i=0; i<sizeof(gLocator); i++ ) gLocator[i] = ' ';
   
   // --- 1st character
   
