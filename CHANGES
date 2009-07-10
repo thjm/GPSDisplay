@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.2 2009/07/10 14:21:20 avr Exp $
+$Id: CHANGES,v 1.3 2009/07/10 20:32:14 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -12,6 +12,7 @@ ToDo:
 
 2009/07/10 (thjm) - SConstruct splitted into SConscript
                     + extra build directory
+		  - Clean() target to removed .build directory for 'scons -c'
 		  - AVR implementation added:
 		    - Makefile is for AVR (similar to WhereAVR)
 		    - GPSDisplay.c contains the main() for the AVR

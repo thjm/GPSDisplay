@@ -1,7 +1,7 @@
 #
 # SConstruct for GPSDisplay base directory
 #
-# $Id: SConstruct,v 1.2 2009/07/10 14:21:20 avr Exp $
+# $Id: SConstruct,v 1.3 2009/07/10 20:32:14 avr Exp $
 #
 
 import os
@@ -60,6 +60,8 @@ if env.get('debug',0):
 Export('env')
 
 SConscript('SConscript', build_dir = '.build')
+
+Clean('.','.build')
 
 # the default target
 #
