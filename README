@@ -1,0 +1,13 @@
+$Id: README,v 1.1 2009/07/10 10:59:00 avr Exp $
+
+README file for project GPSDisplay
+============================================================================
+
+This is the project GPSDisplay. The initial goal of the project is to
+have a similar device like the one described in FA 4/09 pg. 403.
+
+The original device is based on a PIC 18F252 and uses a Navilock NL-504ETTL or
+NL-501ETTL (Sirf3) as GPS module. By pressing a button one can schange the
+text displayed at the LCD between different display modes.
+
+============================================================================

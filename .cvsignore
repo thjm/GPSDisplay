@@ -1,0 +1,6 @@
+*.o
+*.i
+.sconsign.dblite
+options.cache
+.build
+gpstest
