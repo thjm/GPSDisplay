@@ -4,7 +4,7 @@
 //
 // Purpose: Test program for GPS receiver string evaluation
 //
-// $Id: gpstest.cc,v 1.2 2009/07/10 20:46:52 avr Exp $
+// $Id: gpstest.cc,v 1.3 2009/07/15 10:13:26 avr Exp $
 //
 
 
@@ -12,6 +12,7 @@
 #include <sstream>
 #include <cstdio>
 #include <cstdlib>
+#include <unistd.h>   // getopt() stuff
 
 #include <SerialPort.h>
 
@@ -32,6 +33,15 @@ using namespace std;
 // --------------------------------------------------------------------------
 // --------------------------------------------------------------------------
 
+static void Usage(const char *pname)
+ {
+  cerr << "Usage: " << pname << " -p <serial-port> "
+       << "[-o <outfile>]" << endl << endl;
+  cerr << "Example: " << pname << " -p /dev/ttyS0 -o nmea.dat" << endl;
+}
+
+// --------------------------------------------------------------------------
+
 //
 // run with:
 //  ./gpstest /dev/ttyUSB0
@@ -40,14 +50,49 @@ using namespace std;
 
 int main(int argc,char** argv)
  {
-  if ( argc < 2 ) {
-    cerr << "Usage: " << argv[0] << " <serial-port>" << endl;
+  if ( argc < 3 ) {
+    Usage( argv[0] );
     exit( EXIT_FAILURE );
   }
   
+  // --- read application parameters from the cmd line
+  
+  string outfile_name;
+  string ser_device;
+  
+  int getopt_status;
+  
+  do {
+    
+    getopt_status = getopt( argc, argv, "p:o:?" );
+    
+    if ( getopt_status == EOF ) break;
+    
+    // Note: getopt re-orders the argument list, i.e. first all
+    //       arguments and their parameters with '-option' syntax,
+    //       then the rest
+
+    switch ( getopt_status ) {
+      
+      case 'o': outfile_name = optarg;
+        	break;
+
+      case 'p': ser_device = optarg;
+        	break;
+
+      case '?': Usage( argv[0] );
+        	exit( EXIT_FAILURE );
+        	break;
+
+      default: printf ( "Encountered unknown option: %d,%c\n",
+	       getopt_status, getopt_status );
+    }
+    
+  } while ( getopt_status != EOF );
+
   // Open the serial port. 
   //
-  SerialPort serial_port( argv[1] );
+  SerialPort serial_port( ser_device );
   
   // Set communication parameters & open the port, catch exceptions
   //
@@ -90,6 +135,16 @@ int main(int argc,char** argv)
   ostringstream gps_msg;
   int display_mode = 0;
   
+  FILE * outfile = NULL;
+  
+  if ( !outfile_name.empty() ) {
+  
+    outfile = fopen( outfile_name.c_str(), "w" );
+    
+    if ( !outfile )
+      cerr << argv[0] << ": coul dnot open NMEA data output file!" << endl;
+  }
+  
   while ( !leave ) {
     
     unsigned char ch, data;
@@ -102,6 +157,11 @@ int main(int argc,char** argv)
 
       if ( GpsMsgHandler( data ) == kTRUE ) {
       
+        if ( outfile ) {
+	  fprintf( outfile, "%s", gps_msg.str().c_str() );
+	  fflush( outfile );
+	}
+
         cout << "GPS: " << gps_msg.str();
 	gps_msg.str("");
 	
@@ -168,6 +228,9 @@ int main(int argc,char** argv)
   //
   serial_port.Close();
   
+  if ( outfile )
+    fclose( outfile );
+
   exit(EXIT_SUCCESS);
 }
 

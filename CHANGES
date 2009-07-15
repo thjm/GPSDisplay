@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.4 2009/07/10 20:46:52 avr Exp $
+$Id: CHANGES,v 1.5 2009/07/15 10:13:26 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -9,6 +9,7 @@ ToDo:
 - add button
 - place text strings in Flash (ProgMem)
 
+2009/07/15 (thjm) - added (optional) writing to file of NMEA strings
 
 2009/07/10 (thjm) - SConstruct splitted into SConscript
                     + extra build directory
