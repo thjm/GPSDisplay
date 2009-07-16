@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.5 2009/07/15 10:13:26 avr Exp $
+$Id: CHANGES,v 1.6 2009/07/16 13:30:52 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -9,6 +9,23 @@ ToDo:
 - add button
 - place text strings in Flash (ProgMem)
 
+2009/07/16 (thjm) - wiring scheme for PC-GPS-AVRTracker adaptor:
+
+                     PC (DTE)                           GPS (DCE) 
+		    ----------                         -----------
+		     RxD (2,gn) ----------------------- RxD (3,ye)
+		     TxD (3,ye) ----------------+ +---- TxD (2,ye)
+		     GND (5,bn) --------------*-------- GND (5,bn)
+		                              | | |
+		                              | | |     AVR (DCE)
+					      | | |    -----------
+					      | | +---- RxD (3,ye)
+					      | +------ TxD (2,gn)
+					      +-------- GND (5,bn)
+
+                  - test program for the LCD added (testLCD.c)
+		  - worked on Makefile (pattern rules)
+		  
 2009/07/15 (thjm) - added (optional) writing to file of NMEA strings
 
 2009/07/10 (thjm) - SConstruct splitted into SConscript

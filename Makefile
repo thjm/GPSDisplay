@@ -1,7 +1,7 @@
 ###############################################################################
 # Makefile for the project GPSDisplay
 #
-# $Id: Makefile,v 1.1 2009/07/10 14:21:20 avr Exp $
+# $Id: Makefile,v 1.2 2009/07/16 13:30:52 avr Exp $
 #
 ###############################################################################
 
@@ -11,6 +11,8 @@ MCU = atmega8
 TARGET = GPSDisplay.elf
 FORMAT = ihex
 CC = avr-gcc
+
+SRCS	= 
 
 UARTLIBDIR = $(HOME)/src/AVR/PFleury/uartlibrary
 LCDLIBDIR =$(HOME)/src/AVR/PFleury/lcdlibrary
@@ -49,6 +51,8 @@ HEX_EEPROM_FLAGS = -j .eeprom
 HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0
 
+## Sources for make depend
+SRCS += GPSDisplay.c GPS.c uart.c LcdDisplay.c lcd.c
 
 ## Objects that must be built in order to link
 OBJECTS = GPSDisplay.o GPS.o uart.o LcdDisplay.o lcd.o
@@ -57,17 +61,21 @@ OBJECTS = GPSDisplay.o GPS.o uart.o LcdDisplay.o lcd.o
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) GPSDisplay.hex GPSDisplay.eep size
+all: $(TARGET) GPSDisplay.hex GPSDisplay.eep test size
 
-## Compile
-GPSDisplay.o: GPSDisplay.c
+## Compile (via suffix rule)
+.c.o:
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-GPS.o: GPS.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+## some pattern rules
+%.hex : %.elf
+	avr-objcopy -O $(FORMAT) $(HEX_FLASH_FLAGS)  $< $@
 
-LcdDisplay.o: LcdDisplay.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+%.eep : %.elf
+	avr-objcopy $(HEX_EEPROM_FLAGS) -O $(FORMAT) $< $@
+
+%.lst : %.elf
+	avr-objdump -h -S $< > $@
 
 uart.o: $(UARTLIBDIR)/uart.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
@@ -79,14 +87,23 @@ lcd.o: $(LCDLIBDIR)/lcd.c
 $(TARGET): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) $(LINKONLYOBJECTS) $(LIBDIRS) $(LIBS) -o $(TARGET)
 
-%.hex: $(TARGET)
-	avr-objcopy -O $(FORMAT) $(HEX_FLASH_FLAGS)  $< $@
+## test targets
 
-%.eep: $(TARGET)
-	avr-objcopy $(HEX_EEPROM_FLAGS) -O $(FORMAT) $< $@
+test:: testLCD.hex testLCD.lst
 
-%.lst: $(TARGET)
-	avr-objdump -h -S $< > $@
+SRCS += testLCD.c
+
+TESTLCD_OBJS = testLCD.o lcd.o
+
+testLCD.hex: testLCD.elf
+	avr-objcopy -O $(FORMAT) $(HEX_FLASH_FLAGS) $< $@
+	@avr-size --target=$(FORMAT) testLCD.elf
+
+testLCD.elf: $(TESTLCD_OBJS)
+	$(CC) $(LDFLAGS) $(TESTLCD_OBJS) -o $@
+
+clean::
+	-rm -f *.o testLCD.elf testLCD.hex testLCD.lst
 
 ## general targets
 
@@ -94,11 +111,11 @@ size: ${TARGET}
 	@echo
 #	@avr-size -C --mcu=${MCU} ${TARGET}
 	@avr-size --target=$(FORMAT) ${TARGET}
-	@avr-size -A $(TARGET)
+#	@avr-size -A $(TARGET)
 
 ## Clean target
 .PHONY: clean
-clean:
+clean::
 	-rm -rf $(OBJECTS) GPSDisplay.elf .deps/* GPSDisplay.hex GPSDisplay.eep
 
 ## Other dependencies
