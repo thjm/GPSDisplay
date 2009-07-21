@@ -4,7 +4,7 @@
 /*************************************************************************
  Title	:   C include file for the HD44780U LCD library (lcd.c)
  Author:    Peter Fleury <pfleury@gmx.ch>  http://jump.to/fleury
- File:	    $Id: lcd-2x16.h,v 1.2 2009/07/16 13:30:52 avr Exp $
+ File:	    $Id: lcd-2x16.h,v 1.3 2009/07/21 20:25:23 avr Exp $
  Software:  AVR-GCC 3.3
  Hardware:  any AVR device, memory mapped mode only for AT90S4414/8515/Mega
 ***************************************************************************/
@@ -47,6 +47,7 @@
  */
 #ifdef F_CPU
 # warning XTAL set to F_CPU !
+# undef XTAL
 # define XTAL F_CPU
 #else
 # warning F_CPU is not defined, XTAL set to 4000000 !
@@ -95,10 +96,10 @@
 #define LCD_DATA1_PORT   LCD_PORT     /**< port for 4bit data bit 1 */
 #define LCD_DATA2_PORT   LCD_PORT     /**< port for 4bit data bit 2 */
 #define LCD_DATA3_PORT   LCD_PORT     /**< port for 4bit data bit 3 */
-#define LCD_DATA0_PIN    1            /**< pin for 4bit data bit 0  */
-#define LCD_DATA1_PIN    2            /**< pin for 4bit data bit 1  */
-#define LCD_DATA2_PIN    3            /**< pin for 4bit data bit 2  */
-#define LCD_DATA3_PIN    4            /**< pin for 4bit data bit 3  */
+#define LCD_DATA0_PIN    0            /**< pin for 4bit data bit 0  */
+#define LCD_DATA1_PIN    1            /**< pin for 4bit data bit 1  */
+#define LCD_DATA2_PIN    2            /**< pin for 4bit data bit 2  */
+#define LCD_DATA3_PIN    3            /**< pin for 4bit data bit 3  */
 #define LCD_RS_PORT      PORTD        /**< port for RS line         */
 #define LCD_RS_PIN       3            /**< pin  for RS line         */
 #define LCD_RW_PORT      PORTD        /**< port for RW line         */

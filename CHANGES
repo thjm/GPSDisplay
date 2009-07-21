@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.6 2009/07/16 13:30:52 avr Exp $
+$Id: CHANGES,v 1.7 2009/07/21 20:25:23 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -9,6 +9,10 @@ ToDo:
 - add button
 - place text strings in Flash (ProgMem)
 
+2009/07/21 (thjm) - wiring for LCD finally OK:
+                    - one display turns out to be 2x1x8 (=1x16)
+		    - second one has probably defective rows (=2x16)
+		    
 2009/07/16 (thjm) - wiring scheme for PC-GPS-AVRTracker adaptor:
 
                      PC (DTE)                           GPS (DCE) 

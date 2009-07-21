@@ -4,7 +4,7 @@
  *
  * Purpose: Test the LCD attached to the board (WhereAVR)
  *
- * $Id: testLCD.c,v 1.1 2009/07/16 13:30:52 avr Exp $
+ * $Id: testLCD.c,v 1.2 2009/07/21 20:25:23 avr Exp $
  *
  */
 
@@ -77,7 +77,7 @@ int main(void)
   
   /* initialize display, cursor off */
   lcd_init(LCD_DISP_ON);
-
+  
   /* main loop (endless) */
 
   while (1) {
@@ -158,7 +158,8 @@ int main(void)
     
     test++; if ( test > 6 ) test = 0;
     
-    delay_ms(1000);
+    for ( int i=0; i<5; i++)
+      delay_ms(1000);
   }
   
   return 0;
