@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.8 2009/07/24 15:52:40 avr Exp $
+$Id: CHANGES,v 1.9 2009/07/24 17:29:04 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -6,6 +6,10 @@ CHANGES file for project GPSDisplay
 ToDo:
 -----
 - place text strings in Flash (ProgMem)
+- GPS data quality display (via yellow LED/blinking)
+- fix latitude display (character set ?)
+- use N4TXIs Serial.c rather than P.Fleurys uartlib
+- reduce memory consumption of some calculations/conversion routines
 
 
 2009/07/24 (thjm) - imported get8key4.* (P.Dannegger) 
