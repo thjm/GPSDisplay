@@ -1,7 +1,7 @@
 ###############################################################################
 # Makefile for the project GPSDisplay
 #
-# $Id: Makefile,v 1.2 2009/07/16 13:30:52 avr Exp $
+# $Id: Makefile,v 1.3 2009/07/24 15:52:40 avr Exp $
 #
 ###############################################################################
 
@@ -25,6 +25,9 @@ COMMON = -mmcu=$(MCU) -std=c99
 ## Compile time definitions, program options
 DEFINES = 
 #DEFINES += -DAPRS
+# 
+#DEFINES += -DUSE_N4TXI_UART
+# these definitions are for P.Fleurys 'uartlibrary'
 DEFINES += -DUART_RX_BUFFER_SIZE=128
 #DEFINES += -DUART_TX_BUFFER_SIZE=32
 DEFINES = -DLCD_MODE=LCD_2X16
@@ -52,10 +55,10 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0
 
 ## Sources for make depend
-SRCS += GPSDisplay.c GPS.c uart.c LcdDisplay.c lcd.c
+SRCS += GPSDisplay.c GPS.c uart.c get8key4.c LCDDisplay.c lcd.c
 
 ## Objects that must be built in order to link
-OBJECTS = GPSDisplay.o GPS.o uart.o LcdDisplay.o lcd.o
+OBJECTS = GPSDisplay.o GPS.o uart.o get8key4.o LCDDisplay.o lcd.o
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
@@ -83,6 +86,9 @@ uart.o: $(UARTLIBDIR)/uart.c
 lcd.o: $(LCDLIBDIR)/lcd.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
+Serial.o: Serial.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
 ## Link
 $(TARGET): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) $(LINKONLYOBJECTS) $(LIBDIRS) $(LIBS) -o $(TARGET)
@@ -102,12 +108,16 @@ testLCD.hex: testLCD.elf
 testLCD.elf: $(TESTLCD_OBJS)
 	$(CC) $(LDFLAGS) $(TESTLCD_OBJS) -o $@
 
+size:: testLCD.elf
+	@echo
+	@avr-size --target=$(FORMAT) testLCD.elf
+
 clean::
 	-rm -f *.o testLCD.elf testLCD.hex testLCD.lst
 
 ## general targets
 
-size: ${TARGET}
+size:: ${TARGET}
 	@echo
 #	@avr-size -C --mcu=${MCU} ${TARGET}
 	@avr-size --target=$(FORMAT) ${TARGET}

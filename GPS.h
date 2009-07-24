@@ -3,11 +3,16 @@
  *
  * Purpose: GPS messaging definitions/declarations for the atmega8.
  *
- * $Id: GPS.h,v 1.2 2009/07/10 14:21:20 avr Exp $
+ * $Id: GPS.h,v 1.3 2009/07/24 15:52:40 avr Exp $
  */
 
 #ifndef _GPS_h_
 #define _GPS_h_
+
+/** @file GPS.h
+  * Declarations for file GPS.c
+  * @author
+  */
 
 #define kTRUE   (1==1)
 #define kFALSE  (1==0)

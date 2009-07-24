@@ -1,16 +1,16 @@
 /*
- * File   : LcdDisplay.h
+ * File   : LCDDisplay.h
  *
  * Purpose: Display the GPS data on a 2*16 LCD display.
  *
- * $Id: LcdDisplay.h,v 1.3 2009/07/24 15:48:25 avr Exp $
+ * $Id: LCDDisplay.h,v 1.1 2009/07/24 15:52:40 avr Exp $
  */
 
-#ifndef _LcdDisplay_h_
-#define _LcdDisplay_h_
+#ifndef _LCDDisplay_h_
+#define _LCDDisplay_h_
 
-/** @file LcdDisplay.h
-  * Declarations & definitions from/for LcdDisplay.c
+/** @file LCDDisplay.h
+  * Declarations & definitions from/for LCDDisplay.c
   * @author H.-J.Mathes, DC2IP
   */
 
@@ -39,4 +39,4 @@ extern void LcdDisplayShow(void);
 }
 #endif /* __cplusplus */
 
-#endif /* _LcdDisplay_h_ */
+#endif /* _LCDDisplay_h_ */

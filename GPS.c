@@ -4,15 +4,23 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.4 2009/07/10 20:46:52 avr Exp $
+ * $Id: GPS.c,v 1.5 2009/07/24 15:52:40 avr Exp $
  *
  */
+
 
 #if !(defined __AVR__)
 # include <stdio.h>
 #endif /* __AVR__ */
+
 #include <stdlib.h>  // atoi()
 #include <string.h>
+
+/** @file GPS.c
+  * GPS routines.
+  * @author
+  */
+
 
 #include "GPS.h"
 
@@ -99,8 +107,9 @@ void GpsMsgPrepare(void)
 
 unsigned char GpsMsgHandler(unsigned char newchar)
 /*
- * ABSTRACT:	Processes the characters coming in from USART.  In this case,
- *				this is the port connected to the gps receiver.
+ * ABSTRACT:	Processes the characters coming in from USART.  
+ *
+ *              In this case, this is the port connected to the gps receiver.
  *
  * INPUT:	newchar		Next character from the serial port.
  * OUTPUT:	None

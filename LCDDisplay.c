@@ -1,10 +1,10 @@
 
 /*
- * File   : LcdDisplay.c
+ * File   : LCDDisplay.c
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LcdDisplay.c,v 1.3 2009/07/24 15:48:25 avr Exp $
+ * $Id: LCDDisplay.c,v 1.1 2009/07/24 15:52:40 avr Exp $
  *
  */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/** @file LcdDisplay.c
+/** @file LCDDisplay.c
   * Routines for displaying GPS data on LCD display.
   * @author H.-J.Mathes, DC2IP
   */
@@ -27,7 +27,7 @@
 #endif /* __AVR__ */
 
 #include "GPS.h"
-#include "LcdDisplay.h"
+#include "LCDDisplay.h"
 
 static EDisplayMode gDisplayMode = kDateTime;
 

@@ -4,7 +4,7 @@
 //
 // Purpose: Test program for GPS receiver string evaluation
 //
-// $Id: gpstest.cc,v 1.3 2009/07/15 10:13:26 avr Exp $
+// $Id: gpstest.cc,v 1.4 2009/07/24 15:52:40 avr Exp $
 //
 
 
@@ -17,7 +17,7 @@
 #include <SerialPort.h>
 
 #include "GPS.h"
-#include "LcdDisplay.h"
+#include "LCDDisplay.h"
 
 // --- C prototypes for linked ui.c
 

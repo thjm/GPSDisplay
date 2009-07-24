@@ -1,7 +1,7 @@
 #
 # SConscript for GPSDisplay base directory
 #
-# $Id: SConscript,v 1.2 2009/07/10 20:30:46 avr Exp $
+# $Id: SConscript,v 1.3 2009/07/24 15:52:40 avr Exp $
 #
 
 Import('env')
@@ -22,7 +22,7 @@ env.AppendUnique(LIBPATH = [ env['LIBSERIALLIBDIR'] ])
 
 # program gpstest
 #
-srcs = Split('gpstest.cc LcdDisplay.c GPS.c ui.c')
+srcs = Split('gpstest.cc LCDDisplay.c GPS.c ui.c')
 
 env.Program('gpstest', srcs, LIBS = env['LIBSERIALLIB'])
 
