@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LcdDisplay.c,v 1.2 2009/07/10 14:21:20 avr Exp $
+ * $Id: LcdDisplay.c,v 1.3 2009/07/24 15:48:25 avr Exp $
  *
  */
 
@@ -12,9 +12,15 @@
 //#if !(defined __AVR__)
 # include <stdio.h>
 //#endif /* __AVR__ */
+
 #include <stdlib.h>
 #include <string.h>
 
+/** @file LcdDisplay.c
+  * Routines for displaying GPS data on LCD display.
+  * @author H.-J.Mathes, DC2IP
+  */
+ 
 #if (defined __AVR__)
 # include <avr/pgmspace.h>
 # include "lcd.h"

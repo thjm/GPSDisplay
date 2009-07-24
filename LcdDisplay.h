@@ -3,11 +3,16 @@
  *
  * Purpose: Display the GPS data on a 2*16 LCD display.
  *
- * $Id: LcdDisplay.h,v 1.2 2009/07/10 14:21:20 avr Exp $
+ * $Id: LcdDisplay.h,v 1.3 2009/07/24 15:48:25 avr Exp $
  */
 
 #ifndef _LcdDisplay_h_
 #define _LcdDisplay_h_
+
+/** @file LcdDisplay.h
+  * Declarations & definitions from/for LcdDisplay.c
+  * @author H.-J.Mathes, DC2IP
+  */
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +27,8 @@ typedef enum {
   kLocatorAltitude,
   kSpeedRoute,
   kDOP,
+  
+  kMaxDisplayMode = kDOP
 
 } EDisplayMode;
 
