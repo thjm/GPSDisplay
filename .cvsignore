@@ -6,6 +6,8 @@ options.cache
 .deps
 .build
 gpstest
+*.map
+*.lst
 *.elf
 *.hex
 *.eep
