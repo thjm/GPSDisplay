@@ -1,7 +1,7 @@
 ###############################################################################
 # Makefile for the project GPSDisplay
 #
-# $Id: Makefile,v 1.3 2009/07/24 15:52:40 avr Exp $
+# $Id: Makefile,v 1.4 2009/07/27 06:57:49 avr Exp $
 #
 ###############################################################################
 
@@ -91,7 +91,8 @@ Serial.o: Serial.c
 
 ## Link
 $(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) $(LINKONLYOBJECTS) $(LIBDIRS) $(LIBS) -o $(TARGET)
+	$(CC) $(LDFLAGS) $^ $(LINKONLYOBJECTS) $(LIBDIRS) $(LIBS) \
+	-o $(TARGET) -Wl,-Map,$(PROJECT).map
 
 ## test targets
 
@@ -126,7 +127,7 @@ size:: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean::
-	-rm -rf $(OBJECTS) GPSDisplay.elf .deps/* GPSDisplay.hex GPSDisplay.eep
+	-rm -rf $(OBJECTS) GPSDisplay.elf .deps/* GPSDisplay.hex GPSDisplay.eep GPSDisplay.map
 
 ## Other dependencies
 -include $(shell mkdir .deps 2>/dev/null) $(wildcard .deps/*)

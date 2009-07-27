@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.1 2009/07/24 15:52:40 avr Exp $
+ * $Id: LCDDisplay.c,v 1.2 2009/07/27 06:57:49 avr Exp $
  *
  */
 
@@ -107,14 +107,64 @@ static void LcdDisplayUpdate(void)
   char temp[10];
   char *src;
   int seconds;
+#if (defined __AVR__)
+  const char *pLCD1, *pLCD2;
+#else
+  const char *pLCD1, *pLCD2;
+#endif // __AVR__
 
+  // clear strings to be displayed next
+  
   memset( gLCDLine1, ' ', sizeof(gLCDLine1));
   memset( gLCDLine2, ' ', sizeof(gLCDLine2));
+
+  // read display masks from memory
   
   switch ( gDisplayMode ) {
 
     case kTimeLocator:
-      memcpy( gLCDLine1, gLCDText[0][0], sizeof(gLCDLine1) );
+      
+      pLCD1 = gLCDText[0][0];
+      pLCD2 = gLCDText[0][1];
+      break;
+
+    case kLatLon:
+      pLCD1 = gLCDText[2][0];
+      pLCD2 = gLCDText[2][1];
+      break;
+
+    case kLocatorAltitude:
+      pLCD1 = gLCDText[3][0];
+      pLCD2 = gLCDText[3][1];
+      break;
+
+#if 0
+    case kSpeedRoute:
+      pLCD1 = gLCDText[4][0];
+      pLCD2 = gLCDText[4][1];
+      break;
+#endif
+
+    case kDOP:
+      pLCD1 = gLCDText[5][0];
+      pLCD2 = gLCDText[5][1];
+      break;
+
+    case kDateTime:
+    default:
+      pLCD1 = gLCDText[1][0];
+      pLCD2 = gLCDText[1][1];
+  }
+      
+  memcpy( gLCDLine1, pLCD1, sizeof(gLCDLine1) );
+  memcpy( gLCDLine2, pLCD2, sizeof(gLCDLine2) );
+  
+  // fill display strings with data
+    
+  switch ( gDisplayMode ) {
+
+    case kTimeLocator:
+      
       src = gGpsData.fTime;
       gLCDLine1[3] = *src++;
       gLCDLine1[4] = *src++;
@@ -124,12 +174,10 @@ static void LcdDisplayUpdate(void)
       gLCDLine1[10] = *src++;
 
       GpsCalculateLocator();
-      memcpy( gLCDLine2, gLCDText[0][1], sizeof(gLCDLine2) );
       strncpy( &gLCDLine2[5], gLocator, 6 );
       break;
 
     case kLatLon:
-      memcpy( gLCDLine1, gLCDText[2][0], sizeof(gLCDLine1) );
       
       src = gGpsData.fLatitude;
       gLCDLine1[6] = *src++;
@@ -145,8 +193,6 @@ static void LcdDisplayUpdate(void)
       
       gLCDLine1[14] = '"';
       gLCDLine1[15] = gGpsData.fNorthSouth[0];
-
-      memcpy( gLCDLine2, gLCDText[2][1], sizeof(gLCDLine2) );
 
       src = gGpsData.fLongitude;
       gLCDLine2[5] = *src++;
@@ -167,10 +213,8 @@ static void LcdDisplayUpdate(void)
     
     case kLocatorAltitude:
       GpsCalculateLocator();
-      memcpy( gLCDLine1, gLCDText[3][0], sizeof(gLCDLine1) );
       strncpy( &gLCDLine1[9], gLocator, 6 );
 
-      memcpy( gLCDLine2, gLCDText[3][1], sizeof(gLCDLine2) );
       strncpy( &gLCDLine2[14-strlen(gGpsData.fAltitude)], 
                gGpsData.fAltitude, strlen(gGpsData.fAltitude) );
       break;

@@ -4,7 +4,7 @@
  *
  * Purpose: Contains main() of project GPSDisplay 
  *
- * $Id: GPSDisplay.c,v 1.2 2009/07/24 15:52:40 avr Exp $
+ * $Id: GPSDisplay.c,v 1.3 2009/07/27 06:57:49 avr Exp $
  *
  */
  
@@ -190,6 +190,7 @@ int main(void)
     else {
       // check error flags first
       if ( ch & UART_FRAME_ERROR )
+        //uart_puts_p( PSTR("UART Frame Error!\r\n") );
         uart_puts_P( "UART Frame Error!\r\n" );
       if ( ch & UART_OVERRUN_ERROR )
         uart_puts_P( "UART Overrun Error!\r\n" );
