@@ -4,7 +4,7 @@
 //
 // Purpose: Test program for GPS receiver string evaluation
 //
-// $Id: gpstest.cc,v 1.4 2009/07/24 15:52:40 avr Exp $
+// $Id: gpstest.cc,v 1.5 2009/07/30 11:03:39 avr Exp $
 //
 
 
@@ -12,6 +12,7 @@
 #include <sstream>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <unistd.h>   // getopt() stuff
 
 #include <SerialPort.h>
@@ -36,11 +37,18 @@ using namespace std;
 static void Usage(const char *pname)
  {
   cerr << "Usage: " << pname << " -p <serial-port> "
-       << "[-o <outfile>]" << endl << endl;
-  cerr << "Example: " << pname << " -p /dev/ttyS0 -o nmea.dat" << endl;
+       << "[-i] [-o <outfile>]" << endl << endl;
+  cerr << "Example: " << pname << " -i -p /dev/ttyS0 -o nmea.dat" << endl;
 }
 
 // --------------------------------------------------------------------------
+
+const char * gInitSequence[] = {
+
+  "$PGRMO,GPGSV,0",
+  "$PGRMIE",
+  "$PGRALM"
+};
 
 //
 // run with:
@@ -59,12 +67,13 @@ int main(int argc,char** argv)
   
   string outfile_name;
   string ser_device;
+  bool do_init = false;
   
   int getopt_status;
   
   do {
     
-    getopt_status = getopt( argc, argv, "p:o:?" );
+    getopt_status = getopt( argc, argv, "ip:o:?" );
     
     if ( getopt_status == EOF ) break;
     
@@ -74,6 +83,9 @@ int main(int argc,char** argv)
 
     switch ( getopt_status ) {
       
+      case 'i': do_init = true;
+        	break;
+
       case 'o': outfile_name = optarg;
         	break;
 
@@ -119,6 +131,48 @@ int main(int argc,char** argv)
     exit(EXIT_FAILURE);
   }
 
+  // initialisation of the GPS module (optional)
+  //
+  
+  if ( do_init ) {
+    
+    ostringstream msg;
+    unsigned char checksum;
+    
+    for ( unsigned int i=0; i<sizeof(gInitSequence)/sizeof(char *); i++ ) {
+      
+      msg.str( gInitSequence[i] );
+      
+      checksum = 0;
+      for ( unsigned int s=0; s<strlen(gInitSequence[i]); s++ )
+        checksum ^= gInitSequence[i][s];
+      
+      msg << '*';
+      msg << hex << checksum << dec;
+      msg << '\r';
+      msg << '\n';
+            
+      try {
+        serial_port.Write( msg.str() );
+      }
+      catch ( SerialPort::NotOpen& ex ) {
+        cerr << "Error: Port is not open: " << ex.what() << endl;
+        exit( EXIT_FAILURE );;
+      }
+      catch ( std::exception& ex ) {
+        cerr << "Error: RunTime error: " << ex.what() << endl;
+        exit( EXIT_FAILURE );;
+      }
+      catch (...) {
+        cerr << "Caught unknown exception in SerialPort::Write()"
+             << " in file " << __FILE__
+             << ", line " << __LINE__
+             << " !" << endl;
+        exit(EXIT_FAILURE);
+      }
+    }
+  }
+  
   // test code initialisation
   //
   GpsMsgInit();
@@ -142,7 +196,7 @@ int main(int argc,char** argv)
     outfile = fopen( outfile_name.c_str(), "w" );
     
     if ( !outfile )
-      cerr << argv[0] << ": coul dnot open NMEA data output file!" << endl;
+      cerr << argv[0] << ": could not open NMEA data output file!" << endl;
   }
   
   while ( !leave ) {
@@ -162,7 +216,7 @@ int main(int argc,char** argv)
 	  fflush( outfile );
 	}
 
-        cout << "GPS: " << gps_msg.str();
+        cout << gps_msg.str();
 	gps_msg.str("");
 	
         GpsMsgPrepare();
