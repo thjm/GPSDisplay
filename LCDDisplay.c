@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.2 2009/07/27 06:57:49 avr Exp $
+ * $Id: LCDDisplay.c,v 1.3 2009/08/03 19:48:31 avr Exp $
  *
  */
 
@@ -188,7 +188,11 @@ static void LcdDisplayUpdate(void)
       strncpy( temp, &gGpsData.fLatitude[5], 4 ); temp[4] = 0;
       seconds = atoi( temp ) * 6;
       seconds /= 1000;
+#if (defined __AVR__)
+      itoa( seconds, temp, 10 );
+#else
       sprintf(temp,"%02d",seconds);
+#endif // __AVR__
       strncpy( &gLCDLine1[12], temp, 2);
       
       gLCDLine1[14] = '"';
@@ -204,7 +208,11 @@ static void LcdDisplayUpdate(void)
       strncpy( temp, &gGpsData.fLongitude[6], 4 ); temp[4] = 0;
       seconds = atoi( temp ) * 6;
       seconds /= 1000;
+#if (defined __AVR__)
+      itoa( seconds, temp, 10 );
+#else
       sprintf(temp,"%02d",seconds);
+#endif // __AVR__
       strncpy( &gLCDLine2[12], temp, 2);
 
       gLCDLine2[14] = '"';
