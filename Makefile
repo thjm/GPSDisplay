@@ -1,7 +1,7 @@
 ###############################################################################
 # Makefile for the project GPSDisplay
 #
-# $Id: Makefile,v 1.4 2009/07/27 06:57:49 avr Exp $
+# $Id: Makefile,v 1.5 2009/08/07 09:23:37 avr Exp $
 #
 ###############################################################################
 
@@ -37,6 +37,10 @@ CFLAGS = $(COMMON)
 CFLAGS += $(DEFINES)
 CFLAGS += -Wall -gdwarf-2  -DF_CPU=14745600UL -Os -fsigned-char
 CFLAGS += -MD -MP -MT $(*F).o -MF .deps/$(@F).d 
+#CFLAGS += --combine
+#CFLAGS += -fwhole-program
+#CFLAGS += -ffunction-sections
+
 
 ## Assembly specific flags
 ASMFLAGS = $(COMMON)

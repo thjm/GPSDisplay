@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.3 2009/08/03 19:48:31 avr Exp $
+ * $Id: LCDDisplay.c,v 1.4 2009/08/07 09:23:37 avr Exp $
  *
  */
 
@@ -96,9 +96,17 @@ static const char *gLCDText[][2] = {
 //  0123456789012345    0123456789012345
  { "   xx:xx:xxUT   ", "     JN49FD     " }, // kTimeLocator
  { "DATE:   .  .    ", "TIME:   :  :  UT" }, // kDateTime
+#if (defined __AVR__)
+ { "LAT:    \337  '    ", "LON:    \377  '    " }, // kLatLon
+#else
  { "LAT:    °  '    ", "LON:    °  '    " }, // kLatLon
+#endif // __AVR__
  { "LOCATOR:        ", "HEIGHT:        m" }, // kLocatorAltitude
+#if (defined __AVR__)
+ { "SPEED:      km/h", "ROUTE:         \377" }, // kSpeedRoute
+#else
  { "SPEED:      km/h", "ROUTE:         °" }, // kSpeedRoute
+#endif // __AVR__
  { "HDOP:           ", "SATS:           " }, // kDOP
 };
 
