@@ -4,7 +4,7 @@
 //
 // Purpose: Test program for GPS receiver string evaluation
 //
-// $Id: gpstest.cc,v 1.5 2009/07/30 11:03:39 avr Exp $
+// $Id: gpstest.cc,v 1.6 2009/08/10 15:05:53 avr Exp $
 //
 
 
@@ -43,7 +43,7 @@ static void Usage(const char *pname)
 
 // --------------------------------------------------------------------------
 
-const char * gInitSequence[] = {
+static const char * gInitSequence[] = {
 
   "$PGRMO,GPGSV,0",
   "$PGRMIE",
@@ -52,9 +52,8 @@ const char * gInitSequence[] = {
 
 //
 // run with:
-//  ./gpstest /dev/ttyUSB0
+//  ./gpstest -p /dev/ttyUSB0
 //
-
 
 int main(int argc,char** argv)
  {

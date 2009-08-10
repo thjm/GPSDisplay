@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.4 2009/08/07 09:23:37 avr Exp $
+ * $Id: LCDDisplay.c,v 1.5 2009/08/10 15:05:53 avr Exp $
  *
  */
 
@@ -15,6 +15,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 /** @file LCDDisplay.c
   * Routines for displaying GPS data on LCD display.
@@ -46,11 +47,15 @@ void LcdDisplayShow(void)
   
   LcdDisplayUpdate();
   
-  // clear display
-
-#if (defined __AVR__)
-  lcd_clrscr();        // clear display and home cursor
-#endif /* __AVR */
+//
+// http://www.mikrocontroller.net/topic/46867#new
+// -> write LCD completely, don't clear it before !!!
+//
+//  // clear display
+//
+//#if (defined __AVR__)
+//  lcd_clrscr();        // clear display and home cursor
+//#endif /* __AVR */
 
   // and output the data
     
@@ -97,15 +102,15 @@ static const char *gLCDText[][2] = {
  { "   xx:xx:xxUT   ", "     JN49FD     " }, // kTimeLocator
  { "DATE:   .  .    ", "TIME:   :  :  UT" }, // kDateTime
 #if (defined __AVR__)
- { "LAT:    \337  '    ", "LON:    \377  '    " }, // kLatLon
+ { "LAT:    \337  '    ", "LON:    \337  '    " }, // kLatLon
 #else
  { "LAT:    °  '    ", "LON:    °  '    " }, // kLatLon
 #endif // __AVR__
  { "LOCATOR:        ", "HEIGHT:        m" }, // kLocatorAltitude
 #if (defined __AVR__)
- { "SPEED:      km/h", "ROUTE:         \377" }, // kSpeedRoute
+ { "SPEED:    0 km/h", "ROUTE:       0 \337" }, // kSpeedRoute
 #else
- { "SPEED:      km/h", "ROUTE:         °" }, // kSpeedRoute
+ { "SPEED:    0 km/h", "ROUTE:       0 °" }, // kSpeedRoute
 #endif // __AVR__
  { "HDOP:           ", "SATS:           " }, // kDOP
 };
@@ -114,7 +119,6 @@ static void LcdDisplayUpdate(void)
  {
   char temp[10];
   char *src;
-  int seconds;
 #if (defined __AVR__)
   const char *pLCD1, *pLCD2;
 #else
@@ -146,12 +150,10 @@ static void LcdDisplayUpdate(void)
       pLCD2 = gLCDText[3][1];
       break;
 
-#if 0
     case kSpeedRoute:
       pLCD1 = gLCDText[4][0];
       pLCD2 = gLCDText[4][1];
       break;
-#endif
 
     case kDOP:
       pLCD1 = gLCDText[5][0];
@@ -168,6 +170,8 @@ static void LcdDisplayUpdate(void)
   memcpy( gLCDLine2, pLCD2, sizeof(gLCDLine2) );
   
   // fill display strings with data
+
+  uint16_t seconds;
     
   switch ( gDisplayMode ) {
 
@@ -197,7 +201,12 @@ static void LcdDisplayUpdate(void)
       seconds = atoi( temp ) * 6;
       seconds /= 1000;
 #if (defined __AVR__)
-      itoa( seconds, temp, 10 );
+      if ( seconds < 10 ) {
+        temp[0] = '0';
+        itoa( seconds, &temp[1], 10 );
+      }
+      else
+        itoa( seconds, temp, 10 );
 #else
       sprintf(temp,"%02d",seconds);
 #endif // __AVR__
@@ -217,7 +226,12 @@ static void LcdDisplayUpdate(void)
       seconds = atoi( temp ) * 6;
       seconds /= 1000;
 #if (defined __AVR__)
-      itoa( seconds, temp, 10 );
+      if ( seconds < 10 ) {
+        temp[0] = '0';
+        itoa( seconds, &temp[1], 10 );
+      }
+      else
+        itoa( seconds, temp, 10 );
 #else
       sprintf(temp,"%02d",seconds);
 #endif // __AVR__
@@ -235,15 +249,28 @@ static void LcdDisplayUpdate(void)
                gGpsData.fAltitude, strlen(gGpsData.fAltitude) );
       break;
 
-#if 0
     case kSpeedRoute:
-      memcpy( gLCDLine1, gLCDText[4][0], sizeof(gLCDLine1) );
-      memcpy( gLCDLine2, gLCDText[4][1], sizeof(gLCDLine2) );
+      if ( strlen(gGpsData.fSpeed) == 1 )
+        strncpy( &gLCDLine1[10], gGpsData.fSpeed, 1 );
+      else if ( strlen(gGpsData.fSpeed) == 2 )
+        strncpy( &gLCDLine1[9], gGpsData.fSpeed, 2 );
+      else
+        strncpy( &gLCDLine1[8], gGpsData.fSpeed, 3 );
+      if ( strlen(gGpsData.fCourse) == 1 )
+        strncpy( &gLCDLine2[13], gGpsData.fCourse, 1  );
+      else if ( strlen(gGpsData.fCourse) == 2 )
+        strncpy( &gLCDLine2[12], gGpsData.fCourse, 2  );
+      else
+        strncpy( &gLCDLine2[11], gGpsData.fCourse, 3  );
       break;
-#endif
 
     case kDOP:
       memcpy( gLCDLine1, gLCDText[5][0], sizeof(gLCDLine1) );
+      src = gGpsData.fHDOP;
+      if ( gGpsData.fHDOP[1] == '.' )
+        memcpy( &gLCDLine1[13], src, 4 );
+      else
+        memcpy( &gLCDLine1[12], src, 4 );
       
       memcpy( gLCDLine2, gLCDText[5][1], sizeof(gLCDLine2) );
       src = gGpsData.fSatellites;

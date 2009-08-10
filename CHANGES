@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.10 2009/07/30 11:03:39 avr Exp $
+$Id: CHANGES,v 1.11 2009/08/10 15:05:53 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -17,6 +17,17 @@ ToDo:
 - use N4TXIs Serial.c rather than P.Fleurys uartlib
 - reduce memory consumption of some calculations/conversion routines
 
+
+2009/08/10 (thjm) - continuing development with Navilock NL-303P module...
+                    - '°' sign no OK for LCD
+		    - HDOP display added
+		    - removed leading '0's in degrees display
+		    - fixed bugs in lat/lon seconds display
+		    - time filed is longer -> special treatment required
+		    - fixed locator calculation, was b...shit !
+		    - fixed char array sizes
+		    - enabled speed/course display
+		  - gpssim.cc: a program to provide valid NMEA-strings for sim.
 
 2009/07/24 (thjm) - imported get8key4.* (P.Dannegger) 
                   - checking push button to advance LCD display mode

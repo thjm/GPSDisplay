@@ -4,7 +4,7 @@
  *
  * Purpose: Contains main() of project GPSDisplay 
  *
- * $Id: GPSDisplay.c,v 1.3 2009/07/27 06:57:49 avr Exp $
+ * $Id: GPSDisplay.c,v 1.4 2009/08/10 15:05:53 avr Exp $
  *
  */
  
@@ -171,7 +171,8 @@ int main(void)
   unsigned int ch;
 #endif // USE_N4TXI_UART
   
-  unsigned int lcd_mode = kDateTime;
+  //uint8_t lcd_mode = kDateTime;
+  uint8_t lcd_mode = kLatLon;
   
   LcdDisplaySetMode( lcd_mode );
   
@@ -209,8 +210,6 @@ int main(void)
     
     if ( GetKeyPress( BUTTON1 ) ) {
       
-      //while ( gKeyState & BUTTON1 );  // wait until button was released
-    
       lcd_mode++; 
       
       if ( lcd_mode > kMaxDisplayMode ) lcd_mode = kTimeLocator;

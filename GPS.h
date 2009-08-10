@@ -3,7 +3,7 @@
  *
  * Purpose: GPS messaging definitions/declarations for the atmega8.
  *
- * $Id: GPS.h,v 1.3 2009/07/24 15:52:40 avr Exp $
+ * $Id: GPS.h,v 1.4 2009/08/10 15:05:53 avr Exp $
  */
 
 #ifndef _GPS_h_
@@ -29,6 +29,8 @@ typedef enum {
   kGPRMC = 1,
   kGPGGA = 2,
   
+  kGPVTG = 3,
+  
   kGPGSA = 9    // detected, but not decoded
   
 } EGPSSentenceType;
@@ -44,7 +46,11 @@ typedef struct {
 
   unsigned char  fStatus;              // Status bits to indicate ...
   
+#if (defined GPS_NAVILOCK)
+  char  fTime[11];		       // UTC time in HHMMSS.sss format
+#else
   char  fTime[7];		       // UTC time in HHMMSS format
+#endif // GPS_NAVILOCK
 #ifndef APRS
   char  fDate[7];                      // Date in DDMMYY format
 #endif /* APRS */
@@ -53,8 +59,8 @@ typedef struct {
   char  fLongitude[11]; 	       // Longitude in DDDMM.MMMM format
   char  fEastWest[1];
   char  fAltitude[8];		       // Altitude (meters) in MMM.MMM format
-  char  fSpeed[6];		       // Speed (knots) in kkk.kk format
-  char  fCourse[6];		       // Track angle (degrees) in ddd.dd format
+  char  fSpeed[7];		       // Speed (knots) in kkk.kk format
+  char  fCourse[7];		       // Track angle (degrees) in ddd.dd format
 #ifndef APRS
   char  fHDOP[5];                      // (H)DOP, precision value
 #endif /* APRS */

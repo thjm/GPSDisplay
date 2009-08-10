@@ -1,7 +1,7 @@
 #
 # SConstruct for GPSDisplay base directory
 #
-# $Id: SConstruct,v 1.3 2009/07/10 20:32:14 avr Exp $
+# $Id: SConstruct,v 1.4 2009/08/10 15:05:53 avr Exp $
 #
 
 import os
@@ -14,6 +14,10 @@ opts = Options('options.cache', ARGUMENTS)
 #
 opts.AddOptions(BoolOption('debug', 'set debug flags', 1),
                 BoolOption('warning', 'use extended warning options', 0),
+		EnumOption('model', 'GPS module model', 'navilock',
+		           allowed_values=('garmin',
+			                   'navilock')
+			   )
 	       )
 
 # get THE environment with some basic environment settings
@@ -56,6 +60,13 @@ env.AppendUnique(CPPPATH  = ['.'])
 #
 if env.get('debug',0):
    env.AppendUnique(CCFLAGS = ['-g','-ggdb'])
+
+# set pre-processor flag depending on GPS module model
+#
+if env.get('model','navilock') == 'navilock':
+  env.AppendUnique(CPPDEFINES = ['GPS_NAVILOCK'])
+else:
+  env.AppendUnique(CPPDEFINES = ['GPS_GARMIN'])
 
 Export('env')
 

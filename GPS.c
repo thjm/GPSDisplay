@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.5 2009/07/24 15:52:40 avr Exp $
+ * $Id: GPS.c,v 1.6 2009/08/10 15:05:53 avr Exp $
  *
  */
 
@@ -15,6 +15,7 @@
 
 #include <stdlib.h>  // atoi()
 #include <string.h>
+#include <stdint.h>
 
 /** @file GPS.c
   * GPS routines.
@@ -79,21 +80,54 @@ void GpsMsgPrepare(void)
  {
   GpsDataClear( &gGpsData );
   
+#if (defined GPS_NAVILOCK)
+  gTempGpsData.fTime[6] = 0;                                // cut '.sss' part of the data
+#endif /* GPS_NAVILOCK */
   strcpy( gGpsData.fTime, gTempGpsData.fTime ); 	    // latest Time
+
 #ifndef APRS
   strcpy( gGpsData.fDate, gTempGpsData.fDate ); 	    // latest Date
 #endif /* APRS */
+  
   strcpy( gGpsData.fLatitude, gTempGpsData.fLatitude );     // latest Latitude
+  if ( gGpsData.fLatitude[0] == '0' )                       // remove leading '0' in degrees field
+    gGpsData.fLatitude[0] = ' ';
   gGpsData.fNorthSouth[0] = gTempGpsData.fNorthSouth[0];
+  
   strcpy( gGpsData.fLongitude, gTempGpsData.fLongitude );   // latest Longitude
+  for ( uint8_t i=0; i<2; i++ ) {                           // remove leading '0' in degrees field
+    if ( gGpsData.fLongitude[i] == '0' )
+      gGpsData.fLongitude[i] = ' ';
+    else
+      break;
+  }
   gGpsData.fEastWest[0] = gTempGpsData.fEastWest[0];
+  
   strcpy( gGpsData.fAltitude, gTempGpsData.fAltitude );     // latest Altitude
+  for ( uint8_t i=0; i<sizeof(gTempGpsData.fSpeed); i++ )       // skip fractional value
+    if (  gTempGpsData.fSpeed[i] == '.' ) {
+      gTempGpsData.fSpeed[i] = 0;
+      break;
+    }
   strcpy( gGpsData.fSpeed, gTempGpsData.fSpeed );	    // latest Speed
+
+  for ( uint8_t i=0; i<sizeof(gTempGpsData.fCourse); i++ )       // skip fractional value
+    if (  gTempGpsData.fCourse[i] == '.' ) {
+      gTempGpsData.fCourse[i] = 0;
+      break;
+    }
   strcpy( gGpsData.fCourse, gTempGpsData.fCourse );	    // latest Course
+
   strcpy( gGpsData.fSatellites, gTempGpsData.fSatellites ); // latest Satellites
 
+#ifndef APRS
+  strcpy( gGpsData.fHDOP, gTempGpsData.fHDOP );             // latest HDOP
+#endif /* APRS */
+
+#if (defined APRS) || (defined TEST)
   // convert altitude string into feet
   GpsCalculateFeet();
+#endif /* APRS || TEST */
   
   // finally manipulate the status bits ...
   if ( GpsDataIsValid( &gTempGpsData ) ) GpsDataSetValid( &gGpsData );
@@ -144,22 +178,30 @@ unsigned char GpsMsgHandler(unsigned char newchar)
     return kTRUE;
   }
   
+  // detect NMEA sentence type ...
+  
   if (commas == 0) {
   	  
     switch (newchar) {
     
-      case ('C'):		      		// Only the GPRMC sentence contains a "C"
+      case 'C':		      			// Only the GPRMC sentence contains a "C"
   	  gSentenceType = kGPRMC; 		// Set local parse variable
   	  break;
       
-      case ('S'):		      		// Take note if sentence contains an "S"
+      case 'S':		      			// Take note if sentence contains an "S"
   	  gSentenceType = kGPGSA; 		// ...because we don't want to parse it
   	  break;
       
-      case ('A'):		      		// The GPGGA sentence ID contains "A"
+      case 'A':		      			// The GPGGA sentence ID contains "A"
   	  if (gSentenceType != kGPGSA)    	// As does GPGSA, which we will ignore
   	    gSentenceType = kGPGGA; 		// Set local parse variable
   	  break;
+#if 0
+      case 'V':
+          gSentenceType = kGPVTG;
+  	  break;
+#endif
+
     }
 
     return kFALSE;
@@ -212,6 +254,7 @@ unsigned char GpsMsgHandler(unsigned char newchar)
 
 #ifndef APRS
       case 8: 					// HDOP field
+  	  gTempGpsData.fHDOP[index++] = newchar;
   	  return kFALSE;
 #endif /* APRS */
 
@@ -272,7 +315,7 @@ unsigned char GpsMsgHandler(unsigned char newchar)
   	  return kFALSE;
 #endif
 
-      case 7: 					// Speed field [knots]
+      case 7: 					// Speed field [km/h]
   	  gTempGpsData.fSpeed[index++] = newchar;
   	  return kFALSE;
 
@@ -361,11 +404,12 @@ void GpsCalculateFeet(void)
 void GpsCalculateLocator(void)
  {
   char temp[5];
-  int degrees;
+  uint16_t degrees;
+  uint8_t minutes;
 
   memset( gLocator, ' ', sizeof(gLocator));
   
-  // --- 1st character
+  // --- 1st character (20 degrees per 'digit')
   
   strncpy( temp, gGpsData.fLongitude, 3 ); temp[3] = 0;
   
@@ -376,17 +420,19 @@ void GpsCalculateLocator(void)
 
   gLocator[0] = 'A' + degrees / 20;
 
-  // --- 3rd character
+  // --- 3rd character (2 degrees per 'digit', 120 minutes in total)
   
   gLocator[2] = '0' + ((degrees % 20) >> 1);
   
-  // --- 5th character
+  // --- 5th character (5 minutes per 'digit')
   
-  strncpy( temp, &gGpsData.fLongitude[4], 2 ); temp[2] = 0;
+  strncpy( temp, &gGpsData.fLongitude[3], 2 ); temp[2] = 0;
   
-  gLocator[4] = 'A' + atoi( temp ) / 24;
+  minutes = (degrees % 2) * 60 + atoi( temp );
   
-  // --- 2nd character
+  gLocator[4] = 'A' + minutes / 5;
+  
+  // --- 2nd character (10 degrees per 'digit')
   
   strncpy( temp, gGpsData.fLatitude, 2 ); temp[2] = 0;
   
@@ -397,15 +443,19 @@ void GpsCalculateLocator(void)
 
   gLocator[1] = 'A' + degrees / 10;
   
-  // --- 4th character
+  // --- 4th character (1 degree per 'digit', 60 minutes in total)
 
   gLocator[3] = '0' + degrees % 10;
   
-  // --- 6th character
+  // --- 6th character (2.5 minutes per 'digit')
 
   strncpy( temp, &gGpsData.fLatitude[2], 2 ); temp[2] = 0;
+
+  minutes = atoi( temp ) << 1;
+  if ( atoi(&gGpsData.fLatitude[5]) >= 5000 ) 
+    minutes += 1;
   
-  gLocator[5] = 'A' + (atoi( temp ) << 1) / 24;
+  gLocator[5] = 'A' + minutes / 5;
 
   // finally add the trailing \000
   
