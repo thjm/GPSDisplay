@@ -4,7 +4,7 @@
  *
  * Purpose: Contains main() of project GPSDisplay 
  *
- * $Id: GPSDisplay.c,v 1.4 2009/08/10 15:05:53 avr Exp $
+ * $Id: GPSDisplay.c,v 1.5 2009/08/11 10:14:20 avr Exp $
  *
  */
  
@@ -142,7 +142,7 @@ int main(void)
   
   /* Initialize serial communication functions */
 #ifdef USE_N4TXI_UART
-  SerInit();
+  SerialInit();
 #else
   uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU) );
 #endif // USE_N4TXI_UART
@@ -162,17 +162,22 @@ int main(void)
   
   /* Now receiving with interrupts is possible, TX will no longer conflict */
   sei();
-
-#ifndef USE_N4TXI_UART
+  
+#ifdef USE_N4TXI_UART
+  SerialPutString( "\r\n" );
+  SerialPutString_p( gCopyRight1 );
+  SerialPutString_p( gCopyRight2 );
+  SerialPutString( "\r\n" );
+#else
+  uart_puts_P( "\r\n" );
   uart_puts_p( gCopyRight1 );
   uart_puts_p( gCopyRight2 );
   uart_puts_P( "\r\n" );
   
   unsigned int ch;
 #endif // USE_N4TXI_UART
-  
-  //uint8_t lcd_mode = kDateTime;
-  uint8_t lcd_mode = kLatLon;
+
+  uint8_t lcd_mode = kDateTime;
   
   LcdDisplaySetMode( lcd_mode );
   
@@ -180,7 +185,7 @@ int main(void)
   while (1) {
     
 #ifdef USE_N4TXI_UART
-    Serial_Processes();
+    SerialProcesses();
 #else
     ch = uart_getc();
     

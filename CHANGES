@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.11 2009/08/10 15:05:53 avr Exp $
+$Id: CHANGES,v 1.12 2009/08/11 10:14:20 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -13,10 +13,16 @@ ToDo:
 -----
 - place text strings in Flash (ProgMem)
 - GPS data quality display (via yellow LED/blinking)
-- fix latitude display (character set ?)
-- use N4TXIs Serial.c rather than P.Fleurys uartlib
 - reduce memory consumption of some calculations/conversion routines
 
+Version v1r0:
+-------------
+
+2009/08/11 (thjm) - fixed another bug with Navilocks data format
+                  - added N4TXIs Serial.h/Serial.c files
+		    + using it
+		    - functions renamed to resemble filename
+		    - SerialPutString_p() for PROGMEM strings added
 
 2009/08/10 (thjm) - continuing development with Navilock NL-303P module...
                     - '°' sign no OK for LCD

@@ -1,9 +1,13 @@
 ###############################################################################
 # Makefile for the project GPSDisplay
 #
-# $Id: Makefile,v 1.5 2009/08/07 09:23:37 avr Exp $
+# $Id: Makefile,v 1.6 2009/08/11 10:14:20 avr Exp $
 #
 ###############################################################################
+
+## Flags to steer make
+Use_N4TXI_UART = 1
+Use_Navilock = 1
 
 ## General Flags
 PROJECT = GPSDisplay
@@ -17,7 +21,10 @@ SRCS	=
 UARTLIBDIR = $(HOME)/src/AVR/PFleury/uartlibrary
 LCDLIBDIR =$(HOME)/src/AVR/PFleury/lcdlibrary
 
-INCLUDES = -I. -I$(UARTLIBDIR)
+INCLUDES = -I.
+ifeq ($(Use_N4TXI_UART),0)
+INCLUDES += -I$(UARTLIBDIR)
+endif
 
 ## Options common to compile, link and assembly rules
 COMMON = -mmcu=$(MCU) -std=c99
@@ -26,11 +33,20 @@ COMMON = -mmcu=$(MCU) -std=c99
 DEFINES = 
 #DEFINES += -DAPRS
 # 
-#DEFINES += -DUSE_N4TXI_UART
+ifeq ($(Use_N4TXI_UART),1)
+DEFINES += -DUSE_N4TXI_UART
+endif
+ifeq ($(Use_Navilock),1)
+DEFINES += -DGPS_NAVILOCK
+else
+DEFINES += -DGPS_GARMIN
+endif
 # these definitions are for P.Fleurys 'uartlibrary'
+ifeq ($(Use_N4TXI_UART),0)
 DEFINES += -DUART_RX_BUFFER_SIZE=128
 #DEFINES += -DUART_TX_BUFFER_SIZE=32
-DEFINES = -DLCD_MODE=LCD_2X16
+endif
+DEFINES += -DLCD_MODE=LCD_2X16
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
@@ -59,10 +75,20 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0
 
 ## Sources for make depend
-SRCS += GPSDisplay.c GPS.c uart.c get8key4.c LCDDisplay.c lcd.c
+SRCS += GPSDisplay.c GPS.c get8key4.c LCDDisplay.c lcd.c
+ifeq ($(Use_N4TXI_UART),1)
+SRCS += Serial.c
+else
+SRCS += uart.c
+endif
 
 ## Objects that must be built in order to link
-OBJECTS = GPSDisplay.o GPS.o uart.o get8key4.o LCDDisplay.o lcd.o
+OBJECTS = GPSDisplay.o GPS.o get8key4.o LCDDisplay.o lcd.o
+ifeq ($(Use_N4TXI_UART),1)
+OBJECTS += Serial.o
+else
+OBJECTS += uart.o
+endif
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 

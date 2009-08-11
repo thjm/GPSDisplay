@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.6 2009/08/10 15:05:53 avr Exp $
+ * $Id: GPS.c,v 1.7 2009/08/11 10:14:20 avr Exp $
  *
  */
 
@@ -17,11 +17,21 @@
 #include <string.h>
 #include <stdint.h>
 
+
 /** @file GPS.c
-  * GPS routines.
-  * @author
+  * GPS data conversion routines.
+  * @author G.Dion (N4TXI), H.-J.Mathes (DC2IP)
   */
 
+#if (defined __AVR__)
+# include <avr/io.h>
+// this is only for producing debug output via serial interface!
+# ifdef USE_N4TXI_UART
+#  include "Serial.h"
+# else
+#  include <uart.h>
+# endif // USE_N4TXI_UART
+#endif /* __AVR__ */
 
 #include "GPS.h"
 
@@ -79,7 +89,7 @@ void GpsMsgPrepare(void)
  */
  {
   GpsDataClear( &gGpsData );
-  
+
 #if (defined GPS_NAVILOCK)
   gTempGpsData.fTime[6] = 0;                                // cut '.sss' part of the data
 #endif /* GPS_NAVILOCK */
@@ -104,18 +114,23 @@ void GpsMsgPrepare(void)
   gGpsData.fEastWest[0] = gTempGpsData.fEastWest[0];
   
   strcpy( gGpsData.fAltitude, gTempGpsData.fAltitude );     // latest Altitude
+
+#ifndef APRS
   for ( uint8_t i=0; i<sizeof(gTempGpsData.fSpeed); i++ )       // skip fractional value
     if (  gTempGpsData.fSpeed[i] == '.' ) {
       gTempGpsData.fSpeed[i] = 0;
       break;
     }
+#endif /* APRS */
   strcpy( gGpsData.fSpeed, gTempGpsData.fSpeed );	    // latest Speed
 
+#ifndef APRS
   for ( uint8_t i=0; i<sizeof(gTempGpsData.fCourse); i++ )       // skip fractional value
     if (  gTempGpsData.fCourse[i] == '.' ) {
       gTempGpsData.fCourse[i] = 0;
       break;
     }
+#endif /* APRS */
   strcpy( gGpsData.fCourse, gTempGpsData.fCourse );	    // latest Course
 
   strcpy( gGpsData.fSatellites, gTempGpsData.fSatellites ); // latest Satellites
