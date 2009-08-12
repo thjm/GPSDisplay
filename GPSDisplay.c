@@ -4,7 +4,7 @@
  *
  * Purpose: Contains main() of project GPSDisplay 
  *
- * $Id: GPSDisplay.c,v 1.5 2009/08/11 10:14:20 avr Exp $
+ * $Id: GPSDisplay.c,v 1.6 2009/08/12 14:28:57 avr Exp $
  *
  */
  
@@ -47,7 +47,7 @@ enum {
 
 } EGPSDataQuality;
 
-volatile char gGPSDataQuality = kNoSignal;
+static volatile int8_t gGPSDataQuality = kNoSignal;
 
 /* ------------------------------------------------------------------------- */
 
@@ -64,12 +64,13 @@ void delay_sec(unsigned int sec)
 
 /* ------------------------------------------------------------------------- */
 
-/** Message handler function called by Serial_Processes() from Serial.c
+/** Message handler function called by SerialProcesses() from Serial.c
   */
 void MsgHandler(unsigned char newchar)
  {
+//// output GPS data also to serial interface
 //#ifdef USE_N4TXI_UART
-//  SendByte( newchar );
+//  SerialPutByte( newchar );
 //#else
 //  uart_putc( newchar );
 //#endif // USE_N4TXI_UART
@@ -108,7 +109,7 @@ void MsgHandler(unsigned char newchar)
 
 // --------------------------------------------------------------------------
 
-static const PROGMEM char gCopyRight1[] = "GPSDisplay V1.0 ";
+static const PROGMEM char gCopyRight1[] = "GPS-Display V1.1";
 static const PROGMEM char gCopyRight2[] = " (C) DC2IP 2009";
 
 /** main() function of GPSDisplay.c

@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.12 2009/08/11 10:14:20 avr Exp $
+$Id: CHANGES,v 1.13 2009/08/12 14:28:57 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -11,9 +11,14 @@ Garmin GPS25-LVC strings:
 
 ToDo:
 -----
-- place text strings in Flash (ProgMem)
 - GPS data quality display (via yellow LED/blinking)
 - reduce memory consumption of some calculations/conversion routines
+
+Version v1r1: (not yet tagged)
+-------------
+
+2009/08/12 (thjm) - put all text constants inside flash
+                  - bug in HDOP display fixed (?)
 
 Version v1r0:
 -------------
