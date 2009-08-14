@@ -4,7 +4,7 @@
  *
  * Purpose: Contains main() of project GPSDisplay 
  *
- * $Id: GPSDisplay.c,v 1.6 2009/08/12 14:28:57 avr Exp $
+ * $Id: GPSDisplay.c,v 1.7 2009/08/14 10:53:03 avr Exp $
  *
  */
  
@@ -25,12 +25,13 @@
 
 #ifndef USE_N4TXI_UART
 # include <uart.h>
-#endif // USE_N4TXI_UART
+#endif /* USE_N4TXI_UART */
+
 #include <lcd.h>
 
 #ifdef USE_N4TXI_UART
 # include "Serial.h"
-#endif // USE_N4TXI_UART
+#endif /* USE_N4TXI_UART */
 
 #include "get8key4.h"
 #include "LCDDisplay.h"
@@ -64,6 +65,42 @@ void delay_sec(unsigned int sec)
 
 /* ------------------------------------------------------------------------- */
 
+#ifndef USE_N4TXI_UART
+
+/** Function SerialProcesses() called for P.Fleury UART-library.
+  */
+void SerialProcesses(void) {
+  
+  unsigned int ch;
+
+  ch = uart_getc();
+  
+  if ( ch & UART_NO_DATA ) {
+  
+    // no data received -> continue
+  }
+  else {
+    // check error flags first
+    if ( ch & UART_FRAME_ERROR )
+      //uart_puts_p( PSTR("UART Frame Error!\r\n") );
+      uart_puts_P( "UART Frame Error!\r\n" );
+    if ( ch & UART_OVERRUN_ERROR )
+      uart_puts_P( "UART Overrun Error!\r\n" );
+    if ( ch & UART_BUFFER_OVERFLOW )
+      uart_puts_P( "Buffer overflow Error!\r\n");
+  
+    if ( ch & 0xff ) { // a valid character
+    
+      MsgHandler( (unsigned char)(ch & 0xff) );
+    
+    }
+  }
+}
+
+#endif /* USE_N4TXI_UART */
+
+/* ------------------------------------------------------------------------- */
+
 /** Message handler function called by SerialProcesses() from Serial.c
   */
 void MsgHandler(unsigned char newchar)
@@ -83,6 +120,11 @@ void MsgHandler(unsigned char newchar)
   if ( GpsMsgHandler( newchar ) == kTRUE ) {
   
     GpsMsgPrepare();
+
+    if ( GpsDataIsComplete( &gGpsData ) && !GpsDataIsValid( &gGpsData ) )
+      gGPSDataQuality = kOldData;
+    else if ( GpsDataIsValid( &gGpsData ) ) 
+      gGPSDataQuality = kValidData;
 
     if ( GpsDataIsComplete( &gGpsData ) ) {
     
@@ -124,6 +166,8 @@ static const PROGMEM char gCopyRight2[] = " (C) DC2IP 2009";
   */
 int main(void)
  {
+  static uint8_t first = 1;
+  
   /* Initialize output ports for the LEDs */
   LedGPSInit();
   
@@ -174,8 +218,6 @@ int main(void)
   uart_puts_p( gCopyRight1 );
   uart_puts_p( gCopyRight2 );
   uart_puts_P( "\r\n" );
-  
-  unsigned int ch;
 #endif // USE_N4TXI_UART
 
   uint8_t lcd_mode = kDateTime;
@@ -185,36 +227,27 @@ int main(void)
   /* loop forever ... */
   while (1) {
     
-#ifdef USE_N4TXI_UART
     SerialProcesses();
-#else
-    ch = uart_getc();
-    
-    if ( ch & UART_NO_DATA ) {
-  
-      // no data received -> continue
-    }
-    else {
-      // check error flags first
-      if ( ch & UART_FRAME_ERROR )
-        //uart_puts_p( PSTR("UART Frame Error!\r\n") );
-        uart_puts_P( "UART Frame Error!\r\n" );
-      if ( ch & UART_OVERRUN_ERROR )
-        uart_puts_P( "UART Overrun Error!\r\n" );
-      if ( ch & UART_BUFFER_OVERFLOW )
-        uart_puts_P( "Buffer overflow Error!\r\n");
-    
-      if ( ch & 0xff ) { // a valid character
-      
-        MsgHandler( (unsigned char)(ch & 0xff) );
-      
-      }
-    }
-#endif // USE_N4TXI_UART
 
+#if 1
+    /* display no signal message, if gGPSDataQuality == kNoSignal */
+    
+    if ( gGPSDataQuality == kNoSignal && first == 1 ) {
+    
+      lcd_clrscr();
+      
+      lcd_gotoxy( 0, 0 );
+      lcd_puts_P("No GPS signal !");
+      
+      first = 0;
+      
+      continue;
+    }
+#endif
+    
     /* check if button has been pressed */
     
-    if ( GetKeyPress( BUTTON1 ) ) {
+    if ( (gGPSDataQuality == kValidData) && GetKeyPress( BUTTON1 ) ) {
       
       lcd_mode++; 
       

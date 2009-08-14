@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.7 2009/08/11 10:14:20 avr Exp $
+ * $Id: GPS.c,v 1.8 2009/08/14 10:53:03 avr Exp $
  *
  */
 
@@ -60,7 +60,25 @@ void GpsMsgInit(void)
  * RETURN:	None
  */
  {
-  memset( &gTempGpsData, sizeof(gTempGpsData), 0);
+  memset( &gTempGpsData, sizeof(gTempGpsData), ' ');  // blanks everywhere
+  
+  // write terminating 0 to finish C strings properly
+  
+  gTempGpsData.fTime[sizeof(gTempGpsData.fTime) - 1]             = 
+#ifndef APRS
+  gTempGpsData.fDate[sizeof(gTempGpsData.fDate) - 1]             = 
+#endif /* APRS */
+  gTempGpsData.fLatitude[sizeof(gTempGpsData.fLatitude) - 1]     = 
+  gTempGpsData.fLongitude[sizeof(gTempGpsData.fLongitude) - 1]   = 
+  gTempGpsData.fAltitude[sizeof(gTempGpsData.fAltitude) - 1]     = 
+  gTempGpsData.fSpeed[sizeof(gTempGpsData.fSpeed) - 1]           = 
+  gTempGpsData.fCourse[sizeof(gTempGpsData.fCourse) - 1]         = 
+#ifndef APRS
+  gTempGpsData.fHDOP[sizeof(gTempGpsData.fHDOP) - 1]             = 
+#endif /* APRS */
+  gTempGpsData.fSatellites[sizeof(gTempGpsData.fSatellites) - 1] = 0;
+  
+  // special initialisations ...
   
   gTempGpsData.fSpeed[0]      = gTempGpsData.fSpeed[1] 
                               = gTempGpsData.fSpeed[2]    = '0';
@@ -211,11 +229,11 @@ unsigned char GpsMsgHandler(unsigned char newchar)
   	  if (gSentenceType != kGPGSA)    	// As does GPGSA, which we will ignore
   	    gSentenceType = kGPGGA; 		// Set local parse variable
   	  break;
-#if 0
+#ifndef APRS
       case 'V':
           gSentenceType = kGPVTG;
   	  break;
-#endif
+#endif /* APRS */
 
     }
 
@@ -330,6 +348,7 @@ unsigned char GpsMsgHandler(unsigned char newchar)
   	  return kFALSE;
 #endif
 
+#ifdef APRS
       case 7: 					// Speed field [km/h]
   	  gTempGpsData.fSpeed[index++] = newchar;
   	  return kFALSE;
@@ -337,6 +356,7 @@ unsigned char GpsMsgHandler(unsigned char newchar)
       case 8: 					// Course field [degrees]
   	  gTempGpsData.fCourse[index++] = newchar;
   	  return kFALSE;
+#endif /* APRS */
 
 #ifndef APRS
       case 9: 					// Date field
@@ -347,7 +367,43 @@ unsigned char GpsMsgHandler(unsigned char newchar)
 
     return kFALSE;
 
-  } // end if (sentence_type == GPRMC)
+  } // end if (gSentenceType == kGPRMC)
+
+  //
+  // Example of $GPVTG sentence:
+  //
+  // "$GPVTG,128.74,T,,M,0.15,N,0.3,K*6F"
+  //
+  // = Course Over Ground and Ground Speed
+  //
+
+  if ( gSentenceType == kGPVTG ) {
+
+    switch (commas) {
+    
+                                               // 'True' heading
+      case 1:                                  // Course field [degrees]
+          gTempGpsData.fCourse[index++] = newchar;
+          return kFALSE;
+
+#if 0
+      case 3:                                  // 'Magnetic' heading
+           return kFalse;
+#endif
+
+#if 0
+      case 6:                                  // Speed field [knots]
+           return kFALSE;
+#endif
+
+      case 7:                                  // Speed field [km/h]
+          gTempGpsData.fSpeed[index++] = newchar;
+          return kFALSE;
+
+    }
+
+    return kFALSE;
+  }
 
   return kFALSE;
   

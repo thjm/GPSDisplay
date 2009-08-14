@@ -3,7 +3,7 @@
  *
  * Purpose: GPS messaging definitions/declarations for the atmega8.
  *
- * $Id: GPS.h,v 1.4 2009/08/10 15:05:53 avr Exp $
+ * $Id: GPS.h,v 1.5 2009/08/14 10:53:03 avr Exp $
  */
 
 #ifndef _GPS_h_
@@ -59,7 +59,11 @@ typedef struct {
   char  fLongitude[11]; 	       // Longitude in DDDMM.MMMM format
   char  fEastWest[1];
   char  fAltitude[8];		       // Altitude (meters) in MMM.MMM format
+#ifndef APRS
   char  fSpeed[7];		       // Speed (knots) in kkk.kk format
+#else
+  char  fSpeed[7];		       // Speed (km/h) in kkk.kk format
+#endif /* APRS */
   char  fCourse[7];		       // Track angle (degrees) in ddd.dd format
 #ifndef APRS
   char  fHDOP[5];                      // (H)DOP, precision value
