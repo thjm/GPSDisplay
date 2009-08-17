@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.8 2009/08/14 10:53:03 avr Exp $
+ * $Id: GPS.c,v 1.9 2009/08/17 13:03:29 avr Exp $
  *
  */
 
@@ -133,12 +133,27 @@ void GpsMsgPrepare(void)
   
   strcpy( gGpsData.fAltitude, gTempGpsData.fAltitude );     // latest Altitude
 
-#ifndef APRS
+#ifndef APRS  
   for ( uint8_t i=0; i<sizeof(gTempGpsData.fSpeed); i++ )       // skip fractional value
     if (  gTempGpsData.fSpeed[i] == '.' ) {
       gTempGpsData.fSpeed[i] = 0;
       break;
     }
+
+  static int16_t speed = -1;
+
+  if ( speed == -1 )
+    speed = atoi( gTempGpsData.fSpeed );
+  else {
+    // check gradient, it foo high, use old value
+    if ( abs(speed - atoi( gTempGpsData.fSpeed ) ) > 50 )
+      itoa( speed, gTempGpsData.fSpeed, 10 );
+  }
+  
+  speed = atoi( gTempGpsData.fSpeed );
+  
+  // course undefined if speed == 0 --> set to 0
+  if ( speed == 0 ) itoa( 0, gTempGpsData.fCourse, 10 );
 #endif /* APRS */
   strcpy( gGpsData.fSpeed, gTempGpsData.fSpeed );	    // latest Speed
 
