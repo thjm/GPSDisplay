@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.14 2009/08/14 10:53:03 avr Exp $
+$Id: CHANGES,v 1.15 2009/10/31 17:23:16 avr Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -14,6 +14,8 @@ ToDo:
 - GPS data quality display (via yellow LED/blinking)
 - reduce memory consumption of some calculations/conversion routines
 - avoid display of speed/course if we are not moving (speed gradient)
+- compress information in display, i.e. make more info visible at one time
+- support 4 lines LCD display, for instance ...
 
 
 Version v1r1: (not yet tagged)
@@ -37,11 +39,11 @@ Version v1r0:
 		    - SerialPutString_p() for PROGMEM strings added
 
 2009/08/10 (thjm) - continuing development with Navilock NL-303P module...
-                    - '°' sign no OK for LCD
+                    - '°' sign now OK for LCD
 		    - HDOP display added
 		    - removed leading '0's in degrees display
 		    - fixed bugs in lat/lon seconds display
-		    - time filed is longer -> special treatment required
+		    - time filled is longer -> special treatment required
 		    - fixed locator calculation, was b...shit !
 		    - fixed char array sizes
 		    - enabled speed/course display
