@@ -1,7 +1,7 @@
 #
 # SConstruct for GPSDisplay base directory
 #
-# $Id: SConstruct,v 1.4 2009/08/10 15:05:53 avr Exp $
+# $Id: SConstruct,v 1.5 2010/02/15 17:06:30 mathes Exp $
 #
 
 import os
@@ -49,7 +49,7 @@ Help(opts.GenerateHelpText(env))
 # we need those propably to run our tools
 #
 env.Append(ENV = {'PATH' : os.environ['PATH']})
-env.Append(ENV = {'LD_LIBRARY_PATH' : os.environ['LD_LIBRARY_PATH']})
+env.Append(ENV = {'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH','')})
 env.Append(ENV = {'HOME' : os.environ['HOME']})
 
 # set some global variables and build options
