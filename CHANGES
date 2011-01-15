@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.17 2009/11/02 14:41:11 avr Exp $
+$Id: CHANGES,v 1.18 2011/01/15 16:04:33 mathes Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -21,6 +21,10 @@ ToDo:
 Version v1r2: (not yet tagged)
 -------------
 
+2011/01/15 (thjm) - added some documentation:
+                    - Garmin-GPS25-LVC.pdf
+		    - G500_Navilock_303P.pdf (Navilock product sheet)
+		    - NL_Sirf3_Chipsatz_Schnittstellenbeschreibung_22092005_328.pdf
 Version v1r1: 
 -------------
 
