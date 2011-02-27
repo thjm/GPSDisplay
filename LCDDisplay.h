@@ -3,7 +3,7 @@
  *
  * Purpose: Display the GPS data on a 2*16 LCD display.
  *
- * $Id: LCDDisplay.h,v 1.1 2009/07/24 15:52:40 avr Exp $
+ * $Id: LCDDisplay.h,v 1.2 2011/02/27 16:34:18 mathes Exp $
  */
 
 #ifndef _LCDDisplay_h_
@@ -24,6 +24,7 @@ typedef enum {
   kTimeLocator = 0,
   kDateTime = 1,    // the default display option
   kLatLon,
+  kLatLonGeo,       // latitude & longitude for geocaching
   kLocatorAltitude,
   kSpeedRoute,
   kDOP,

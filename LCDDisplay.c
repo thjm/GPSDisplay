@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.6 2009/08/12 14:28:57 avr Exp $
+ * $Id: LCDDisplay.c,v 1.7 2011/02/27 16:34:18 mathes Exp $
  *
  */
 
@@ -130,11 +130,20 @@ static const char gLCDText_4_1[] PROGMEM = "ROUTE:       0 °";
 static const char gLCDText_5_0[] PROGMEM = "HDOP:           "; // kDOP
 static const char gLCDText_5_1[] PROGMEM = "SATS:           ";
 
+#if (defined __AVR__)
+static const char gLCDText_6_0[] PROGMEM = "LAT:    \337  .   '"; // kLatLonGeo
+static const char gLCDText_6_1[] PROGMEM = "LON:    \337  .   '";
+#else
+static const char gLCDText_6_0[] PROGMEM = "LAT:    °  .    '"; // kLatLonGeo
+static const char gLCDText_6_1[] PROGMEM = "LON:    °  .    '";
+#endif /* __AVR__ */
+
 
 static PGM_P gLCDText_0[] PROGMEM = {
   gLCDText_0_0,
   gLCDText_1_0,
   gLCDText_2_0,
+  gLCDText_6_0,
   gLCDText_3_0,
   gLCDText_4_0,
   gLCDText_5_0,
@@ -144,6 +153,7 @@ static PGM_P gLCDText_1[] PROGMEM = {
   gLCDText_0_1,
   gLCDText_1_1,
   gLCDText_2_1,
+  gLCDText_6_1,
   gLCDText_3_1,
   gLCDText_4_1,
   gLCDText_5_1,
@@ -174,6 +184,11 @@ static void LcdDisplayUpdate(void)
     case kLatLon:
       memcpy_P( &pLCD_0, &gLCDText_0[2], sizeof(PGM_P) );
       memcpy_P( &pLCD_1, &gLCDText_1[2], sizeof(PGM_P) );
+      break;
+
+    case kLatLonGeo:
+      memcpy_P( &pLCD_0, &gLCDText_0[6], sizeof(PGM_P) );
+      memcpy_P( &pLCD_1, &gLCDText_1[6], sizeof(PGM_P) );
       break;
 
     case kLocatorAltitude:
@@ -270,6 +285,9 @@ static void LcdDisplayUpdate(void)
 
       gLCDLine_1[14] = '"';
       gLCDLine_1[15] = gGpsData.fEastWest[0];
+      break;
+    
+    case kLatLonGeo:
       break;
     
     case kLocatorAltitude:

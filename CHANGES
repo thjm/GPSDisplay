@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.18 2011/01/15 16:04:33 mathes Exp $
+$Id: CHANGES,v 1.19 2011/02/27 16:34:18 mathes Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -20,6 +20,8 @@ ToDo:
 
 Version v1r2: (not yet tagged)
 -------------
+
+2011/02/28 (thjm) - added new display mode kLatLonGeo for geocaching
 
 2011/01/15 (thjm) - added some documentation:
                     - Garmin-GPS25-LVC.pdf
