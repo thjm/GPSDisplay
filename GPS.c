@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the GPS stuff
  *
- * $Id: GPS.c,v 1.9 2009/08/17 13:03:29 avr Exp $
+ * $Id: GPS.c,v 1.10 2011/02/28 12:11:33 mathes Exp $
  *
  */
 
@@ -22,6 +22,13 @@
   * GPS data conversion routines.
   * @author G.Dion (N4TXI), H.-J.Mathes (DC2IP)
   */
+
+// itoa() is defenied in stdlib.h according to the man-page but it cannot be
+// found be the linker on some systems ... thus I use snprintf() for this
+// application
+#if !(defined __AVR__)
+# define itoa(_val,_s,_rad) snprintf(_s,sizeof(_s),"%d",_val)
+#endif /* __AVR__ */
 
 #if (defined __AVR__)
 # include <avr/io.h>

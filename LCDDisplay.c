@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.7 2011/02/27 16:34:18 mathes Exp $
+ * $Id: LCDDisplay.c,v 1.8 2011/02/28 12:11:33 mathes Exp $
  *
  */
 
@@ -131,11 +131,11 @@ static const char gLCDText_5_0[] PROGMEM = "HDOP:           "; // kDOP
 static const char gLCDText_5_1[] PROGMEM = "SATS:           ";
 
 #if (defined __AVR__)
-static const char gLCDText_6_0[] PROGMEM = "LAT:    \337  .   '"; // kLatLonGeo
-static const char gLCDText_6_1[] PROGMEM = "LON:    \337  .   '";
+static const char gLCDText_6_0[] PROGMEM = "LAT:    \337  .    "; // kLatLonGeo
+static const char gLCDText_6_1[] PROGMEM = "LON:    \337  .    ";
 #else
-static const char gLCDText_6_0[] PROGMEM = "LAT:    °  .    '"; // kLatLonGeo
-static const char gLCDText_6_1[] PROGMEM = "LON:    °  .    '";
+static const char gLCDText_6_0[] PROGMEM = "LAT:    °  .     "; // kLatLonGeo
+static const char gLCDText_6_1[] PROGMEM = "LON:    °  .     ";
 #endif /* __AVR__ */
 
 
@@ -288,6 +288,21 @@ static void LcdDisplayUpdate(void)
       break;
     
     case kLatLonGeo:
+      
+      src = gGpsData.fLatitude;
+      gLCDLine_0[6] = *src++;
+      gLCDLine_0[7] = *src++;
+      for ( int i=9; i<=15; i++ )
+        gLCDLine_0[i] = *src++;
+      gLCDLine_0[15] = gGpsData.fNorthSouth[0];
+
+      src = gGpsData.fLongitude;
+      gLCDLine_1[5] = *src++;
+      gLCDLine_1[6] = *src++;
+      gLCDLine_1[7] = *src++;
+      for ( int i=9; i<=15; i++ )
+        gLCDLine_1[i] = *src++;
+      gLCDLine_1[15] = gGpsData.fEastWest[0];
       break;
     
     case kLocatorAltitude:

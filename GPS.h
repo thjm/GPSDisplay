@@ -3,7 +3,7 @@
  *
  * Purpose: GPS messaging definitions/declarations for the atmega8.
  *
- * $Id: GPS.h,v 1.5 2009/08/14 10:53:03 avr Exp $
+ * $Id: GPS.h,v 1.6 2011/02/28 12:11:33 mathes Exp $
  */
 
 #ifndef _GPS_h_
@@ -55,9 +55,9 @@ typedef struct {
   char  fDate[7];                      // Date in DDMMYY format
 #endif /* APRS */
   char  fLatitude[10];  	       // Latitude in DDMM.MMMM format
-  char  fNorthSouth[1];
+  char  fNorthSouth[1];                // 'N' or 'S'
   char  fLongitude[11]; 	       // Longitude in DDDMM.MMMM format
-  char  fEastWest[1];
+  char  fEastWest[1];                  // 'E' or 'W'
   char  fAltitude[8];		       // Altitude (meters) in MMM.MMM format
 #ifndef APRS
   char  fSpeed[7];		       // Speed (knots) in kkk.kk format
