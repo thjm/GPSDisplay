@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.21 2011/02/28 21:06:39 mathes Exp $
+$Id: CHANGES,v 1.22 2011/02/28 21:07:58 mathes Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -12,11 +12,15 @@ Garmin GPS25-LVC strings:
 ToDo:
 -----
 - GPS data quality display (via yellow LED/blinking)
+  - or via text message which is displayed once per N seconds
 - reduce memory consumption of some calculations/conversion routines
 - avoid display of speed/course if we are not moving (speed gradient)
 - compress information in display, i.e. make more info visible at one time
 - support 4 lines LCD display, for instance ...
 
+
+Version v1r3: (not yet tagged)
+-------------
 
 Version v1r2: 
 -------------
