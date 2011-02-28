@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.8 2011/02/28 12:11:33 mathes Exp $
+ * $Id: LCDDisplay.c,v 1.9 2011/02/28 21:06:39 mathes Exp $
  *
  */
 
@@ -131,11 +131,11 @@ static const char gLCDText_5_0[] PROGMEM = "HDOP:           "; // kDOP
 static const char gLCDText_5_1[] PROGMEM = "SATS:           ";
 
 #if (defined __AVR__)
-static const char gLCDText_6_0[] PROGMEM = "LAT:    \337  .    "; // kLatLonGeo
-static const char gLCDText_6_1[] PROGMEM = "LON:    \337  .    ";
+static const char gLCDText_6_0[] PROGMEM = "LAT:   \337  .     "; // kLatLonGeo
+static const char gLCDText_6_1[] PROGMEM = "LON:   \337  .     ";
 #else
-static const char gLCDText_6_0[] PROGMEM = "LAT:    °  .     "; // kLatLonGeo
-static const char gLCDText_6_1[] PROGMEM = "LON:    °  .     ";
+static const char gLCDText_6_0[] PROGMEM = "LAT:   °  .      "; // kLatLonGeo
+static const char gLCDText_6_1[] PROGMEM = "LON:   °  .      ";
 #endif /* __AVR__ */
 
 
@@ -143,20 +143,20 @@ static PGM_P gLCDText_0[] PROGMEM = {
   gLCDText_0_0,
   gLCDText_1_0,
   gLCDText_2_0,
-  gLCDText_6_0,
   gLCDText_3_0,
   gLCDText_4_0,
   gLCDText_5_0,
+  gLCDText_6_0,
 };
 
 static PGM_P gLCDText_1[] PROGMEM = {
   gLCDText_0_1,
   gLCDText_1_1,
   gLCDText_2_1,
-  gLCDText_6_1,
   gLCDText_3_1,
   gLCDText_4_1,
   gLCDText_5_1,
+  gLCDText_6_1,
 };
 
 static void LcdDisplayUpdate(void)
@@ -290,17 +290,17 @@ static void LcdDisplayUpdate(void)
     case kLatLonGeo:
       
       src = gGpsData.fLatitude;
+      gLCDLine_0[5] = *src++;
       gLCDLine_0[6] = *src++;
-      gLCDLine_0[7] = *src++;
-      for ( int i=9; i<=15; i++ )
+      for ( int i=8; i<=14; i++ )
         gLCDLine_0[i] = *src++;
       gLCDLine_0[15] = gGpsData.fNorthSouth[0];
 
       src = gGpsData.fLongitude;
+      gLCDLine_1[4] = *src++;
       gLCDLine_1[5] = *src++;
       gLCDLine_1[6] = *src++;
-      gLCDLine_1[7] = *src++;
-      for ( int i=9; i<=15; i++ )
+      for ( int i=8; i<=14; i++ )
         gLCDLine_1[i] = *src++;
       gLCDLine_1[15] = gGpsData.fEastWest[0];
       break;

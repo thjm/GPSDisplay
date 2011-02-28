@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.20 2011/02/28 12:11:33 mathes Exp $
+$Id: CHANGES,v 1.21 2011/02/28 21:06:39 mathes Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -18,7 +18,7 @@ ToDo:
 - support 4 lines LCD display, for instance ...
 
 
-Version v1r2: (not yet tagged)
+Version v1r2: 
 -------------
 
 2011/02/28 (thjm) - added new display mode kLatLonGeo for geocaching
