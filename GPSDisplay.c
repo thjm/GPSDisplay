@@ -4,7 +4,7 @@
  *
  * Purpose: Contains main() of project GPSDisplay 
  *
- * $Id: GPSDisplay.c,v 1.8 2011/02/27 16:34:18 mathes Exp $
+ * $Id: GPSDisplay.c,v 1.9 2011/03/03 13:14:11 mathes Exp $
  *
  */
  
@@ -151,7 +151,7 @@ void MsgHandler(unsigned char newchar)
 
 // --------------------------------------------------------------------------
 
-static const PROGMEM char gCopyRight1[] = "GPS-Display V1.2";
+static const PROGMEM char gCopyRight1[] = "GPS-Display V1.3";
 static const PROGMEM char gCopyRight2[] = " (C) DC2IP 2011";
 
 /** main() function of GPSDisplay.c
