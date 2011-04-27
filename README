@@ -1,4 +1,4 @@
-$Id: README,v 1.2 2009/07/10 14:21:20 avr Exp $
+$Id: README,v 1.3 2011/04/27 12:27:49 mathes Exp $
 
 README file for project GPSDisplay
 ============================================================================
@@ -17,6 +17,15 @@ The LCD routines are taken from the library of P.Fleury [3].
 
 The used GPS module is a Garmin GOS25-LVC (12-channel receiver) [4].
 
+The second version is using the NAVILOCK NL303P GPS module, its pinout is described here [5] (and in this file).
+
+Pin  Pin name                Description
+ 1   GND (black)             Ground signal for power and data
+ 2   VCC +5V (red)           Power supply voltage to GPS +5V
+ 3   Data TTL Rx (blue)      Data to GPS, TTL levels
+ 4   Data RS-232 Rx (white)  Data to GPS, RS-232 levels
+ 5   Data RS-232 Tx (green)  Data from GPS, RS-232 levels
+ 6   Data TTL Tx (yellow)    Data from GPS, TTL levels
 
 References:
 -----------
@@ -27,5 +36,6 @@ References:
        https://buy.garmin.com/shop/store/manual.jsp?product=010-00124-00&cID=170&pID=70
        https://buy.garmin.com/shop/shop.do?cID=170&pID=70&ra=true,
        http://www.gpscity.com/item-garmin-oem-25-lvc/oem25lvc.htm
+ [5] - http://pinouts.ru/GPS/navilock_gps_pinout.shtml
 
 ============================================================================
