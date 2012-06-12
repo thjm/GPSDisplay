@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.23 2011/03/03 13:14:11 mathes Exp $
+$Id: CHANGES,v 1.24 2012/06/12 15:54:35 mathes Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -29,7 +29,9 @@ ToDo:
 Version v1r3: (not yet tagged)
 -------------
 
-2011/03/** (thjm) - (1), (2) & (3)
+****/**/** (thjm) - (1), (2) & (3)
+
+2011/04/27 (thjm) - NL303P pinout documented in file README
 
 Version v1r2: 
 -------------
