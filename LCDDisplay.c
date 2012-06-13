@@ -4,7 +4,7 @@
  *
  * Purpose: Implementation of the generic LCD display stuff
  *
- * $Id: LCDDisplay.c,v 1.9 2011/02/28 21:06:39 mathes Exp $
+ * $Id: LCDDisplay.c,v 1.10 2012/06/13 12:05:23 mathes Exp $
  *
  */
 
@@ -139,7 +139,7 @@ static const char gLCDText_6_1[] PROGMEM = "LON:   °  .      ";
 #endif /* __AVR__ */
 
 
-static PGM_P gLCDText_0[] PROGMEM = {
+static const PGM_P const gLCDText_0[] PROGMEM = {
   gLCDText_0_0,
   gLCDText_1_0,
   gLCDText_2_0,
@@ -149,7 +149,7 @@ static PGM_P gLCDText_0[] PROGMEM = {
   gLCDText_6_0,
 };
 
-static PGM_P gLCDText_1[] PROGMEM = {
+static const PGM_P const gLCDText_1[] PROGMEM = {
   gLCDText_0_1,
   gLCDText_1_1,
   gLCDText_2_1,
