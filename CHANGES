@@ -1,4 +1,4 @@
-$Id: CHANGES,v 1.25 2012/06/13 12:05:23 mathes Exp $
+$Id: CHANGES,v 1.26 2012/06/13 12:10:09 mathes Exp $
 
 CHANGES file for project GPSDisplay
 ============================================================================
@@ -31,7 +31,7 @@ Version v1r3: (not yet tagged)
 
 ****/**/** (thjm) - (1), (2) & (3)
 
-2011/06/13 (thjm) - made compile with avr-gcc 4.x, x>=4 and avr-libc 1.7.1 with
+2011/06/13 (thjm) - made compile with avr-gcc 4.6.x and avr-libc 1.7.1 with
                     PSTR-patch or avr-libc 1.8.x,
                     see also: http://www.mikrocontroller.net/topic/261366
 
