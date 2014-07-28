@@ -25,15 +25,19 @@ Pin  Pin name                Description
  5   Data RS-232 Tx (green)  Data from GPS, RS-232 levels
  6   Data TTL Tx (yellow)    Data from GPS, TTL levels
 
-References:
------------
+References
+
  [1] - www.funkamateur.de
+ 
  [2] - http://garydion.com/projects/whereavr/; WhereAVR_18JUL2005.zip
+
  [3] - http://www.jump.to/fleury
+
  [4] - GPS 25 Series, Technical Specification, Rev. G, Mar, 2000,
        https://buy.garmin.com/shop/store/manual.jsp?product=010-00124-00&cID=170&pID=70
        https://buy.garmin.com/shop/shop.do?cID=170&pID=70&ra=true,
        http://www.gpscity.com/item-garmin-oem-25-lvc/oem25lvc.htm
+
  [5] - http://pinouts.ru/GPS/navilock_gps_pinout.shtml
 
 
