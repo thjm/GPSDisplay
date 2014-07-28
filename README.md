@@ -25,7 +25,7 @@ Pin  Pin name                Description
  5   Data RS-232 Tx (green)  Data from GPS, RS-232 levels
  6   Data TTL Tx (yellow)    Data from GPS, TTL levels
 
-References
+# References
 
  [1] - www.funkamateur.de
  
