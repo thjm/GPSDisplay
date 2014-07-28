@@ -1,7 +1,4 @@
-$Id: README,v 1.3 2011/04/27 12:27:49 mathes Exp $
-
-README file for project GPSDisplay
-============================================================================
+# About
 
 This is the project GPSDisplay. The initial goal of the project is to
 have a similar device like the one described in FA 4/09 pg. 403 [1].
@@ -39,4 +36,7 @@ References:
        http://www.gpscity.com/item-garmin-oem-25-lvc/oem25lvc.htm
  [5] - http://pinouts.ru/GPS/navilock_gps_pinout.shtml
 
-============================================================================
+
+## Usage
+
+First you have to install a cross-build environment for AVR micro controllers.
