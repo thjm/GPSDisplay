@@ -24,13 +24,13 @@
 #include "global.h"
 
 #ifndef USE_N4TXI_UART
-# include <uart.h>
+ #include <uart.h>
 #endif /* USE_N4TXI_UART */
 
 #include <lcd.h>
 
 #ifdef USE_N4TXI_UART
-# include "Serial.h"
+ #include "Serial.h"
 #endif /* USE_N4TXI_UART */
 
 #include "get8key4.h"

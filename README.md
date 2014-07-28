@@ -10,12 +10,15 @@ text displayed at the LCD between different display modes.
 The GPS decoding routines stem mainly from the WhereAVR project of G.Dion 
 (N4TXI) - see also ref. [2].
 
-The LCD routines are taken from the library of P.Fleury [3].
+The LCD routines are taken from the library of P.Fleury [3]. Optionally, his 
+UART routines can be used, too.
 
-The used GPS module is a Garmin GOS25-LVC (12-channel receiver) [4].
+The button input routine is the 'famous' debounce code of Peter Danegger [4].
+
+The used GPS module is a Garmin GPS25-LVC (12-channel receiver) [5].
 
 The second version is using the NAVILOCK NL303P GPS module, its pinout is 
-described here [5] (and in this file).
+described here [6] (and in this file).
 
 Pin  Pin name                Description
  1   GND (black)             Ground signal for power and data
@@ -33,14 +36,26 @@ Pin  Pin name                Description
 
  [3] - http://www.jump.to/fleury
 
- [4] - GPS 25 Series, Technical Specification, Rev. G, Mar, 2000,
+ [4] - http://www.mikrocontroller.net/topic/6492#new
+
+ [5] - GPS 25 Series, Technical Specification, Rev. G, Mar, 2000,
        https://buy.garmin.com/shop/store/manual.jsp?product=010-00124-00&cID=170&pID=70
        https://buy.garmin.com/shop/shop.do?cID=170&pID=70&ra=true,
        http://www.gpscity.com/item-garmin-oem-25-lvc/oem25lvc.htm
 
- [5] - http://pinouts.ru/GPS/navilock_gps_pinout.shtml
+ [6] - http://pinouts.ru/GPS/navilock_gps_pinout.shtml
 
 
 ## Usage
 
 First you have to install a cross-build environment for AVR micro controllers.
+
+The you have to get the LCD library (and eventually the UART library) from Peter
+Fleury. Change the path to these libraries in the Makefile.
+
+This is how the LCD (2x16) is connected to the Atmel uController:
+
+   DATA0..3 = PC0..3
+   RS	    = PD3
+   RW	    = PD4
+   E	    = PD5
