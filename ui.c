@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 /** @file ui.c
-  * File to be linked or included to provide us with an Unix implementation of 
+  * File to be linked or included to provide us with an Unix implementation of
   * kbhit() and getch().
   * @author H.-J. Mathes, FzK
   */
@@ -28,7 +28,7 @@
 
 /** Get a character from the console.
   *
-  * It is not necessary to preee <Enter> to send the character to the 
+  * It is not necessary to preee <Enter> to send the character to the
   * application
   */
 int getch(void)

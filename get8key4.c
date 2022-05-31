@@ -8,7 +8,7 @@
  *
  * $Id: get8key4.c,v 1.1 2009/07/24 15:52:40 avr Exp $
  */
- 
+
 /************************************************************************/
 /*                                                                      */
 /*                      Debouncing 8 Keys				*/
@@ -40,7 +40,7 @@ void CheckKeys(void)
 
   ct0 = ~( ct0 & i );		// reset or count ct0
   ct1 = ct0 ^ ( ct1 & i );      // reset or count ct1
-  i &= ct0 & ct1;		// count until roll over 
+  i &= ct0 & ct1;		// count until roll over
   gKeyState ^= i;		// then toggle debounced state
   gKeyPress |= gKeyState & i;	// 0->1: key pressing detect
 }
@@ -50,12 +50,12 @@ void CheckKeys(void)
 uint8_t GetKeyPress(uint8_t key_mask)
  {
   cli();          // read and clear atomic !
-  
+
   key_mask &= gKeyPress;                        // read key(s)
   gKeyPress ^= key_mask;                        // clear key(s)
-  
+
   sei();
-  
+
   return key_mask;
 }
 

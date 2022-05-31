@@ -12,21 +12,21 @@
 /**
  @defgroup pfleury_lcd LCD library
  @code #include <lcd.h> @endcode
- 
+
  @brief Basic routines for interfacing a HD44780U-based text LCD display
 
  Originally based on Volker Oth's LCD library,
- changed lcd_init(), added additional constants for lcd_command(), 
+ changed lcd_init(), added additional constants for lcd_command(),
  added 4-bit I/O mode, improved and optimized code.
-       
- Library can be operated in memory mapped mode (LCD_IO_MODE=0) or in 
+
+ Library can be operated in memory mapped mode (LCD_IO_MODE=0) or in
  4-bit IO port mode (LCD_IO_MODE=1). 8-bit IO port mode not supported.
 
- Memory mapped mode compatible with Kanda STK200, but supports also 
+ Memory mapped mode compatible with Kanda STK200, but supports also
  generation of R/W signal through A8 address line.
-       
+
  @author Peter Fleury pfleury@gmx.ch http://jump.to/fleury
- 
+
  @see The chapter <a href="http://homepage.sunrise.ch/mysunrise/peterfleury/avr-lcd44780.html" target="_blank">Interfacing a HD44780 Based LCD to an AVR</a>
       on my home page.
 
@@ -41,9 +41,9 @@
 #include <inttypes.h>
 #include <avr/pgmspace.h>
 
-/** 
+/**
  *  @name  Definitions for MCU Clock Frequency
- *  Adapt the MCU clock frequency in Hz to your target. 
+ *  Adapt the MCU clock frequency in Hz to your target.
  */
 #ifdef F_CPU
 # warning XTAL set to F_CPU !
@@ -60,8 +60,8 @@
  */
 #define LCD_CONTROLLER_KS0073 0  /**< Use 0 for HD44780 controller, 1 for KS0073 controller */
 
-/** 
- *  @name  Definitions for Display Size 
+/**
+ *  @name  Definitions for Display Size
  *  Change these definitions to adapt setting to your display
  */
 #define LCD_LINES	    2	 /**< number of visible lines of the display */
@@ -81,15 +81,15 @@
  *  @name Definitions for 4-bit IO mode
  *  Change LCD_PORT if you want to use a different port for the LCD pins.
  *
- *  The four LCD data lines and the three control lines RS, RW, E can be on the 
- *  same port or on different ports. 
+ *  The four LCD data lines and the three control lines RS, RW, E can be on the
+ *  same port or on different ports.
  *  Change LCD_RS_PORT, LCD_RW_PORT, LCD_E_PORT if you want the control lines on
- *  different ports. 
+ *  different ports.
  *
  *  Normally the four data lines should be mapped to bit 0..3 on one port, but it
  *  is possible to connect these data lines in different order or even on different
  *  ports by adapting the LCD_DATAx_PORT and LCD_DATAx_PIN definitions.
- *  
+ *
  */
 #define LCD_PORT         PORTC        /**< port for the LCD lines   */
 #define LCD_DATA0_PORT   LCD_PORT     /**< port for 4bit data bit 0 */
@@ -124,7 +124,7 @@
 
 /**
  *  @name Definitions for LCD command instructions
- *  The constants define the various LCD controller instructions which can be passed to the 
+ *  The constants define the various LCD controller instructions which can be passed to the
  *  function lcd_command(), see HD44780 data sheet for a complete description.
  */
 

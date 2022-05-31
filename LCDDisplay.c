@@ -21,7 +21,7 @@
   * Routines for displaying GPS data on LCD display.
   * @author H.-J.Mathes, DC2IP
   */
- 
+
 #if (defined __AVR__)
 # include <avr/pgmspace.h>
 # include "lcd.h"
@@ -48,9 +48,9 @@ static void LcdDisplayUpdate(void);
 void LcdDisplayShow(void)
  {
   // update local memory
-  
+
   LcdDisplayUpdate();
-  
+
 //
 // http://www.mikrocontroller.net/topic/46867#new
 // -> write LCD completely, don't clear it before !!!
@@ -62,12 +62,12 @@ void LcdDisplayShow(void)
 //#endif /* __AVR */
 
   // and output the data
-    
+
 #if (defined __AVR__)
   lcd_gotoxy( 0, 0 );
   for (unsigned int i=0; i<sizeof(gLCDLine_0); i++ )
     lcd_putc( gLCDLine_0[i] );
-  
+
   lcd_gotoxy( 0, 1 );
   for (unsigned int i=0; i<sizeof(gLCDLine_1); i++ )
     lcd_putc( gLCDLine_1[i] );
@@ -77,7 +77,7 @@ void LcdDisplayShow(void)
   for (unsigned int i=0; i<sizeof(gLCDLine_0); i++ )
     printf("%c", gLCDLine_0[i] );
   printf("'\n");
-  
+
   printf("LCD1: '");
   for (unsigned int i=0; i<sizeof(gLCDLine_1); i++ )
     printf("%c", gLCDLine_1[i] );
@@ -167,16 +167,16 @@ static void LcdDisplayUpdate(void)
   const PGM_P pLCD_1;
 
   // clear strings to be displayed next
-  
+
   memset( gLCDLine_0, ' ', sizeof(gLCDLine_0));
   memset( gLCDLine_1, ' ', sizeof(gLCDLine_1));
 
   // read display masks from memory
-  
+
   switch ( gDisplayMode ) {
 
     case kTimeLocator:
-      
+
       memcpy_P( &pLCD_0, &gLCDText_0[0], sizeof(PGM_P) );
       memcpy_P( &pLCD_1, &gLCDText_1[0], sizeof(PGM_P) );
       break;
@@ -211,18 +211,18 @@ static void LcdDisplayUpdate(void)
       memcpy_P( &pLCD_0, &gLCDText_0[1], sizeof(PGM_P) );
       memcpy_P( &pLCD_1, &gLCDText_1[1], sizeof(PGM_P) );
   }
-      
+
   memcpy_P( gLCDLine_0, pLCD_0, sizeof(gLCDLine_0) );
   memcpy_P( gLCDLine_1, pLCD_1, sizeof(gLCDLine_1) );
-  
+
   // fill display strings with data
 
   uint16_t seconds;
-    
+
   switch ( gDisplayMode ) {
 
     case kTimeLocator:
-      
+
       src = gGpsData.fTime;
       gLCDLine_0[3] = *src++;
       gLCDLine_0[4] = *src++;
@@ -236,13 +236,13 @@ static void LcdDisplayUpdate(void)
       break;
 
     case kLatLon:
-      
+
       src = gGpsData.fLatitude;
       gLCDLine_0[6] = *src++;
       gLCDLine_0[7] = *src++;
       gLCDLine_0[9] = *src++;
       gLCDLine_0[10] = *src++;
-      
+
       strncpy( temp, &gGpsData.fLatitude[5], 4 ); temp[4] = 0;
       seconds = atoi( temp ) * 6;
       seconds /= 1000;
@@ -257,7 +257,7 @@ static void LcdDisplayUpdate(void)
       sprintf(temp,"%02d",seconds);
 #endif // __AVR__
       strncpy( &gLCDLine_0[12], temp, 2);
-      
+
       gLCDLine_0[14] = '"';
       gLCDLine_0[15] = gGpsData.fNorthSouth[0];
 
@@ -286,9 +286,9 @@ static void LcdDisplayUpdate(void)
       gLCDLine_1[14] = '"';
       gLCDLine_1[15] = gGpsData.fEastWest[0];
       break;
-    
+
     case kLatLonGeo:
-      
+
       src = gGpsData.fLatitude;
       gLCDLine_0[5] = *src++;
       gLCDLine_0[6] = *src++;
@@ -304,12 +304,12 @@ static void LcdDisplayUpdate(void)
         gLCDLine_1[i] = *src++;
       gLCDLine_1[15] = gGpsData.fEastWest[0];
       break;
-    
+
     case kLocatorAltitude:
       GpsCalculateLocator();
       strncpy( &gLCDLine_0[9], gLocator, 6 );
 
-      strncpy( &gLCDLine_1[14-strlen(gGpsData.fAltitude)], 
+      strncpy( &gLCDLine_1[14-strlen(gGpsData.fAltitude)],
                gGpsData.fAltitude, strlen(gGpsData.fAltitude) );
       break;
 
@@ -334,7 +334,7 @@ static void LcdDisplayUpdate(void)
         memcpy( &gLCDLine_0[13], src, 3 );
       else
         memcpy( &gLCDLine_0[12], src, 4 );
-      
+
       src = gGpsData.fSatellites;
       gLCDLine_1[14] = *src++;
       gLCDLine_1[15] = *src++;
@@ -349,7 +349,7 @@ static void LcdDisplayUpdate(void)
       gLCDLine_0[10] = *src++;
       gLCDLine_0[12] = *src++;
       gLCDLine_0[13] = *src++;
-      
+
       src = gGpsData.fTime;
       gLCDLine_1[6] = *src++;
       gLCDLine_1[7] = *src++;

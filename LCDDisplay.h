@@ -28,7 +28,7 @@ typedef enum {
   kLocatorAltitude,
   kSpeedRoute,
   kDOP,
-  
+
   kMaxDisplayMode = kDOP
 
 } EDisplayMode;

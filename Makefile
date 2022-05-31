@@ -23,7 +23,7 @@ AVRDUDE = avrdude
 REMOVE = rm -f
 MV = mv -f
 
-SRCS	= 
+SRCS	=
 
 UARTLIBDIR = $(HOME)/src/AVR/PFleury/uartlibrary
 LCDLIBDIR =$(HOME)/src/AVR/PFleury/lcdlibrary
@@ -37,9 +37,9 @@ endif
 COMMON = -mmcu=$(MCU) -std=c99
 
 ## Compile time definitions, program options
-DEFINES = 
+DEFINES =
 #DEFINES += -DAPRS
-# 
+#
 ifeq ($(Use_N4TXI_UART),1)
 DEFINES += -DUSE_N4TXI_UART
 endif
@@ -59,7 +59,7 @@ DEFINES += -DLCD_MODE=LCD_2X16
 CFLAGS = $(COMMON)
 CFLAGS += $(DEFINES)
 CFLAGS += -Wall -gdwarf-2  -DF_CPU=14745600UL -Os -fsigned-char
-CFLAGS += -MD -MP -MT $(*F).o -MF .deps/$(@F).d 
+CFLAGS += -MD -MP -MT $(*F).o -MF .deps/$(@F).d
 #CFLAGS += --combine
 #CFLAGS += -fwhole-program
 #CFLAGS += -ffunction-sections
@@ -71,7 +71,7 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS += 
+LDFLAGS +=
 
 
 ## Intel Hex file production flags
@@ -126,7 +126,7 @@ OBJECTS += uart.o
 endif
 
 ## Objects explicitly added by the user
-LINKONLYOBJECTS = 
+LINKONLYOBJECTS =
 
 ## Build (without GPSDisplay.eep)
 all: $(TARGET).elf GPSDisplay.hex test size
@@ -201,4 +201,3 @@ clean::
 
 ## Other dependencies
 -include $(shell mkdir .deps 2>/dev/null) $(wildcard .deps/*)
-

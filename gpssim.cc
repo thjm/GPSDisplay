@@ -45,14 +45,14 @@ static void Usage(const char *pname)
 static unsigned char GetNMEAChecksum(const std::string data)
  {
   if ( !data.length() ) return 0;
-  
+
   unsigned char checksum = 0x00;
   const char *ptr = data.c_str();
-  
+
   while ( *ptr != '*' ) {
     checksum ^= *ptr++;
   }
-  
+
   return checksum;
 }
 
@@ -96,20 +96,20 @@ int main(int argc,char** argv)
     Usage( argv[0] );
     exit( EXIT_FAILURE );
   }
-  
+
   // --- read application parameters from the cmd line
-  
+
   string infile_name;
   string ser_device;
-  
+
   int getopt_status;
-  
+
   do {
-    
+
     getopt_status = getopt( argc, argv, "p:o:?" );
-    
+
     if ( getopt_status == EOF ) break;
-    
+
     // Note: getopt re-orders the argument list, i.e. first all
     //       arguments and their parameters with '-option' syntax,
     //       then the rest
@@ -129,13 +129,13 @@ int main(int argc,char** argv)
       default: printf ( "Encountered unknown option: %d,%c\n",
 	       getopt_status, getopt_status );
     }
-    
+
   } while ( getopt_status != EOF );
 
-  // Open the serial port. 
+  // Open the serial port.
   //
   SerialPort serial_port( ser_device );
-  
+
   // Set communication parameters & open the port, catch exceptions
   //
   try {
@@ -163,86 +163,86 @@ int main(int argc,char** argv)
 
   // open input file if existing ...
   //
-  
+
   FILE * infile = NULL;
-  
+
   if ( !infile_name.empty() ) {
-  
+
     infile = fopen( infile_name.c_str(), "w" );
-    
+
     if ( !infile )
       cerr << argv[0] << ": could not open NMEA data input file!" << endl;
   }
 
   // array of GPS data (NMEA) strings
   //
-  
+
   list<string> gps_data;
-  
+
   if ( infile ) {  // from file
   }
   else {           // from default array
     unsigned int i = 0;
-    
+
     while ( gDefaultTrack[i] != NULL ) {
       gps_data.push_back( gDefaultTrack[i++] );
     }
-  }  
+  }
 
   // main loop ...
   //
-  
+
   bool leave = false;
   bool send = true;
 
   list<string>::iterator gps_iter = gps_data.begin();
   time_t t0 = time(NULL);
-  
+
   cout << "You might leave the main loop with 'q' or 'Q' ..." << endl;
-  
+
   while ( !leave ) {
-    
+
     unsigned char ch;
     char date_str[10], time_str[10];
     struct tm *tm;
-    
+
     // check if time has elapsed and set 'send' flag eventually
-    
+
     if ( (time(NULL) - t0) > 10 ) {
       send = true;
     }
-    
+
     // 'send' flag is set:
     // - replace time and date fields
     // - calculate and append checeksum
-    
+
     if ( send ) {
-      
+
       t0 = time(NULL);
       tm = gmtime( &t0 );
-      
+
       string send_str = *gps_iter;
 
-      sprintf( time_str, "%02d%02d%02d", 
+      sprintf( time_str, "%02d%02d%02d",
                          tm->tm_hour, tm->tm_min, tm->tm_sec );
       send_str.replace( send_str.find( "TTTTTT" ), 6, time_str );
-      
-      sprintf( date_str, "%02d%02d%02d", 
+
+      sprintf( date_str, "%02d%02d%02d",
                          tm->tm_mday, tm->tm_mon, tm->tm_year - 100 );
       send_str.replace( send_str.find( "DDDDDD" ), 6, date_str );
-      
+
       cout << send_str << (int)GetNMEAChecksum(send_str) << endl;
-      
+
       gps_iter++;
       if ( gps_iter == gps_data.end() ) gps_iter = gps_data.begin();
-      
+
       send = false;
     }
-    
+
     if ( kbhit() ) {
-    
+
       ch = getch();
-      
+
       switch ( ch ) {
 
         case 'n':
@@ -261,21 +261,21 @@ int main(int argc,char** argv)
 	          leave = 1;
 	          break;
       }
-      
+
     } // if (kbhit()) ...
-    
+
     // sleep a while
-    
+
     usleep( 10 * 1000 );
-    
+
   } // while (!leave) ...
-  
+
   cout << endl << argv[0] << ": main loop terminating..." << endl;
-  
+
   // Close the serial port properly
   //
   serial_port.Close();
-  
+
   if ( infile )
     fclose( infile );
 

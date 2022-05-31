@@ -25,14 +25,14 @@ extern "C" {
 typedef enum {
 
   kNONE = 0,
-  
+
   kGPRMC = 1,
   kGPGGA = 2,
-  
+
   kGPVTG = 3,
-  
+
   kGPGSA = 9    // detected, but not decoded
-  
+
 } EGPSSentenceType;
 
 /** Declaration of status bits. */
@@ -45,7 +45,7 @@ enum {
 typedef struct {
 
   unsigned char  fStatus;              // Status bits to indicate ...
-  
+
 #if (defined GPS_NAVILOCK)
   char  fTime[11];		       // UTC time in HHMMSS.sss format
 #else

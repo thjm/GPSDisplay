@@ -32,7 +32,7 @@ env = Environment(CCFLAGS = ['-W', '-Wall', '-Wwrite-strings',
 # warning: the implicit cache may miss changes after an cvs update
 #
 env.SetOption('max_drift', 1)
-if env.get('nocache',0): 
+if env.get('nocache',0):
    env.SetOption('implicit_cache', 0)
    print "implicit cache disabled"
 else:

@@ -37,7 +37,7 @@ void delay_ms(unsigned short ms)
   // Note: this function is faulty, see avrm8ledtest-0.2.tar.gz for
   //	   updated code.
   unsigned short outer1, outer2;
-  outer1 = 50 * (F_CPU/1000000UL); 
+  outer1 = 50 * (F_CPU/1000000UL);
 
   while ( outer1 ) {
     outer2 = 1000;
@@ -74,20 +74,20 @@ int main(void)
   int test = 0;
   char buffer[7];
   int  num = 1904;
-  
+
   /* initialize display, cursor off */
   lcd_init(LCD_DISP_ON);
-  
+
   /* main loop (endless) */
 
   while (1) {
-  
+
     switch ( test ) {
-    
+
       case 0:   /* clear display and home cursor */
         lcd_clrscr();
 	break;
-	
+
       case 1:   /* print characters in two lines */
         lcd_gotoxy( 0, 0 );
 	lcd_puts("0123456789ABCDEF");
@@ -102,7 +102,7 @@ int main(void)
 	/* cursor is now on second line, write second line */
 	lcd_puts("Line 2");
 	/* move cursor to position 8 on line 2 */
-	lcd_gotoxy(7,1); 
+	lcd_gotoxy(7,1);
 	lcd_putc(':');
 	break;
 
@@ -155,13 +155,13 @@ int main(void)
        break;
 
     } // switch(test) ...
-    
+
     test++; if ( test > 6 ) test = 0;
-    
+
     for ( int i=0; i<5; i++)
       delay_ms(1000);
   }
-  
+
   return 0;
 }
 

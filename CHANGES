@@ -37,7 +37,7 @@ Version v1r3: (not yet tagged)
 
 2011/04/27 (thjm) - NL303P pinout documented in file README
 
-Version v1r2: 
+Version v1r2:
 -------------
 
 2011/02/28 (thjm) - added new display mode kLatLonGeo for geocaching
@@ -50,7 +50,7 @@ Version v1r2:
                     - Garmin-GPS25-LVC.pdf
 		    - G500_Navilock_303P.pdf (Navilock product sheet)
 		    - NL_Sirf3_Chipsatz_Schnittstellenbeschreibung_22092005_328.pdf
-Version v1r1: 
+Version v1r1:
 -------------
 
 2009/08/13 (thjm) - 'No GPS signal !' eventually displayed (first step)
@@ -81,7 +81,7 @@ Version v1r0:
 		    - enabled speed/course display
 		  - gpssim.cc: a program to provide valid NMEA-strings for sim.
 
-2009/07/24 (thjm) - imported get8key4.* (P.Dannegger) 
+2009/07/24 (thjm) - imported get8key4.* (P.Dannegger)
                   - checking push button to advance LCD display mode
 		    - this uses counter1 which is also used in WhereAVR
 		  - LcdDisplay.* -> LCDDisplay.*
@@ -92,10 +92,10 @@ Version v1r0:
 2009/07/21 (thjm) - wiring for LCD finally OK:
                     - one display turns out to be 2x1x8 (=1x16)
 		    - second one has probably defective rows (=2x16)
-		    
+
 2009/07/16 (thjm) - wiring scheme for PC-GPS-AVRTracker adaptor:
 
-                     PC (DTE)                           GPS (DCE) 
+                     PC (DTE)                           GPS (DCE)
 		    ----------                         -----------
 		     RxD (2,gn) ----------------------- RxD (3,ye)
 		     TxD (3,ye) ----------------+ +---- TxD (2,ye)
@@ -109,7 +109,7 @@ Version v1r0:
 
                   - test program for the LCD added (testLCD.c)
 		  - worked on Makefile (pattern rules)
-		  
+
 2009/07/15 (thjm) - added (optional) writing to file of NMEA strings
 
 2009/07/10 (thjm) - SConstruct splitted into SConscript
@@ -128,7 +128,7 @@ Version v1r0:
                     - reading and parsing NMEA strings
 		    - simulation of LCD display
 		    - display most strings correctly on sim. LCD display
-		    
+
 2009/07/01 (thjm) - start of project
 
 ============================================================================

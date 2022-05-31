@@ -148,7 +148,7 @@ void SerialPutString_p(const char *progmem_address)
 */
 {
   register char c;
-  
+
   while ( (c = pgm_read_byte(progmem_address++)) )   // While not to the string end yet
     SerialPutByte(c);
 
@@ -158,9 +158,9 @@ void SerialPutString_p(const char *progmem_address)
 /******************************************************************************/
 void 	SerialProcesses(void)
 /*******************************************************************************
-* ABSTRACT:	Called by main.c during idle time. 
+* ABSTRACT:	Called by main.c during idle time.
 *
-*		Processes any waiting serial characters coming in or going 
+*		Processes any waiting serial characters coming in or going
 *		out both serial ports.
 *
 * INPUT:	None
@@ -180,7 +180,7 @@ void 	SerialProcesses(void)
 /******************************************************************************/
 ISR(USART_RXC_vect)
 /*******************************************************************************
-* ABSTRACT:	Called by the receive ISR (interrupt). 
+* ABSTRACT:	Called by the receive ISR (interrupt).
 *
 *		Saves the next serial byte to the head of the RX buffer.
 *
@@ -198,7 +198,7 @@ ISR(USART_RXC_vect)
 /******************************************************************************/
 ISR(USART_TXC_vect)
 /*******************************************************************************
-* ABSTRACT:	Called by the transmit ISR (interrupt). 
+* ABSTRACT:	Called by the transmit ISR (interrupt).
 *
 *		Puts the next serial byte into the TX register.
 *
