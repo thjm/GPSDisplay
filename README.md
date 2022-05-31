@@ -7,17 +7,17 @@ The original device is based on a PIC 18F252 and uses a Navilock NL-504ETTL or
 NL-501ETTL (Sirf3) as GPS module. By pressing a button one can schange the
 text displayed at the LCD between different display modes.
 
-The GPS decoding routines stem mainly from the WhereAVR project of G.Dion 
+The GPS decoding routines stem mainly from the WhereAVR project of G.Dion
 (N4TXI) - see also ref. [2].
 
-The LCD routines are taken from the library of P.Fleury [3]. Optionally, his 
+The LCD routines are taken from the library of P.Fleury [3]. Optionally, his
 UART routines can be used, too.
 
 The button input routine is the 'famous' debounce code of Peter Danegger [4].
 
 The used GPS module is a Garmin GPS25-LVC (12-channel receiver) [5].
 
-The second version is using the NAVILOCK NL303P GPS module, its pinout is 
+The second version is using the NAVILOCK NL303P GPS module, its pinout is
 described here [6] (and in this file).
 
 Pin  Pin name                Description
@@ -31,7 +31,7 @@ Pin  Pin name                Description
 # References
 
  [1] - www.funkamateur.de
- 
+
  [2] - http://garydion.com/projects/whereavr/; WhereAVR_18JUL2005.zip
 
  [3] - http://www.jump.to/fleury
@@ -59,3 +59,5 @@ This is how the LCD (2x16) is connected to the Atmel uController:
    RS	    = PD3
    RW	    = PD4
    E	    = PD5
+
+- https://pre-commit.com/
